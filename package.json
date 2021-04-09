@@ -1,0 +1,37 @@
+{
+  "dependencies": {
+    "clean-webpack-plugin": "^3.0.0",
+    "csp-html-webpack-plugin": "^5.1.0",
+    "css-loader": "^5.2.1",
+    "env-to-config": "^1.3.2",
+    "fastify": "^3.14.2",
+    "fastify-jwt": "^2.4.0",
+    "fastify-static": "^4.0.1",
+    "file-loader": "^6.2.0",
+    "handmade-livereload-webpack-plugin": "^1.0.9",
+    "html-webpack-plugin": "^5.3.1",
+    "mini-css-extract-plugin": "^1.4.1",
+    "pm2": "^4.5.6",
+    "sass": "^1.32.8",
+    "sass-loader": "^11.0.1",
+    "terser-webpack-plugin": "^5.1.1",
+    "webpack": "^5.31.2"
+  },
+  "scripts": {
+    "list": "pm2 list",
+    "log": "pm2 log",
+    "watch": "webpack --watch",
+    "start": "pm2 start pm2.prod.config.js && pm2 save",
+    "stop": "pm2 stop pm2.prod.config.js && pm2 save",
+    "reload": "pm2 reload pm2.prod.config.js && pm2 save && npm run log",
+    "delete": "pm2 delete pm2.prod.config.js && pm2 save",
+    "start:dev": "pm2 start pm2.dev.config.js && npm run log",
+    "stop:dev": "pm2 stop pm2.dev.config.js",
+    "restart:dev": "pm2 restart pm2.dev.config.js && npm run log",
+    "delete:dev": "pm2 delete pm2.dev.config.js"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7",
+    "webpack-cli": "^4.6.0"
+  }
+}
