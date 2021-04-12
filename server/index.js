@@ -10,38 +10,54 @@ const fastify = require("fastify")({
 });
 
 fastify.register(require("fastify-cookie"));
-fastify.register(require("fastify-static"), {
-    root: publicPath
-});
+
 fastify.register(require("fastify-jwt"), {
     secret: config.JWT_SECRET,
     cookie: {
         cookieName: shared.COOKIE_NAME
     }
 });
+fastify.decorate("authenticate", async function(request, reply) {
 
-
-fastify.addHook("onRequest", async (request, reply) => {
     try {
         await request.jwtVerify()
     } catch (err) {
         reply.send(err)
     }
 })
+fastify.decorate("authorize", async function(request, reply) {
+    try {
+        var user = request.user;
+        console.log(user)
+        // if (user.role === "admin") {
+        //     return;
+        // }
+        //
+        // const scope = user.scope.split(",") || [];
+        // var page = request.params.page;
+        // if (scope.indexOf(page) === -1) {
+        //     var error = new Error(`unauthorize`);
+        //     error.unauthorized = true;
+        //     throw error;
+        // }
+
+    } catch (err) {
+        reply.send(err)
+    }
+})
+
+fastify.register(async function privateContext (childServer) {
+
+    childServer.addHook("preValidation", fastify.authenticate);
+    childServer.addHook("preValidation", fastify.authorize);
+
+    childServer.register(require("fastify-static"), {
+        root: publicPath
+    });
+
+});
 
 
-fastify.addHook('onRequest', (request) => request.jwtVerify())
-//
-// fastify.addHook("onRequest", (request, reply, done) => {
-//     // some code
-//     console.log("onRequest")
-//     done()
-// })
-// fastify.addHook("preHandler", (request, reply, done) => {
-//     // some code
-//     console.log("preHandler")
-//     done()
-// })
 
 fastify.setErrorHandler(function (error, request, reply) {
 
@@ -60,32 +76,7 @@ fastify.setErrorHandler(function (error, request, reply) {
     }
 })
 
-// fastify.decorate("authenticate", async function(request, reply) {
-//     try {
-//         await request.jwtVerify()
-//     } catch (err) {
-//         reply.send(err)
-//     }
-// })
-// fastify.decorate("authorize", async function(request, reply) {
-//     try {
-//         var user = request.user;
-//         if (user.role === "admin") {
-//             return;
-//         }
-//
-//         const scope = user.scope.split(",") || [];
-//         var page = request.params.page;
-//         if (scope.indexOf(page) === -1) {
-//             var error = new Error(`unauthorize`);
-//             error.unauthorized = true;
-//             throw error;
-//         }
-//
-//     } catch (err) {
-//         reply.send(err)
-//     }
-// })
+
 
 
 fastify.get("/ping", async function (request, reply) {
