@@ -199,14 +199,15 @@ module.exports = function (env = {}) {
                 {
                 "default-src": "'self'",
                     "connect-src": IS_PROD ? "'self'" :
-                        ["'self'", "ws://"+ WEBSOCKET_HOST +":3949", "https://"+ WEBSOCKET_HOST +":3949"],
+                        ["'self'", "ws://"+ WEBSOCKET_HOST, "https://"+ WEBSOCKET_HOST],
                 "base-uri": "'none'", // not default-src fallback
                 "form-action": "'none'", // not default-src fallback
                 //"frame-ancestors": "'none'", // not default-src fallback but it's not possible to add via the meta tag
                 "object-src": "'none'",
                 "frame-src": "'none'",
                 "script-src": ["'self'"], // ajv need it and with self nonce does not work
-                "style-src": ["'self'", "'unsafe-inline'"]
+                "style-src": ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
+                "font-src": ["fonts.gstatic.com"]
             }, {
                 enabled: true,
                 hashingMethod: "sha256",
