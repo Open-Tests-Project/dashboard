@@ -3,26 +3,45 @@
 const path = require("path");
 const config = require(path.resolve(process.cwd(), "config"));
 const publicPath = path.resolve(process.cwd(), "public");
-console.log(publicPath)
+const shared = require(path.resolve(process.cwd(), "shared"));
 
 const fastify = require("fastify")({
     logger: false
 });
 
+fastify.register(require("fastify-cookie"));
+fastify.register(require("fastify-static"), {
+    root: publicPath
+});
 fastify.register(require("fastify-jwt"), {
-    secret: config.JWT_SECRET
+    secret: config.JWT_SECRET,
+    cookie: {
+        cookieName: shared.COOKIE_NAME
+    }
 });
 
 
 fastify.addHook("onRequest", async (request, reply) => {
-    console.log(request.url)
-    // try {
-    //     await request.jwtVerify()
-    // } catch (err) {
-    //     reply.send(err)
-    // }
+    try {
+        await request.jwtVerify()
+    } catch (err) {
+        reply.send(err)
+    }
 })
 
+
+fastify.addHook('onRequest', (request) => request.jwtVerify())
+//
+// fastify.addHook("onRequest", (request, reply, done) => {
+//     // some code
+//     console.log("onRequest")
+//     done()
+// })
+// fastify.addHook("preHandler", (request, reply, done) => {
+//     // some code
+//     console.log("preHandler")
+//     done()
+// })
 
 fastify.setErrorHandler(function (error, request, reply) {
 
@@ -68,10 +87,8 @@ fastify.setErrorHandler(function (error, request, reply) {
 //     }
 // })
 
-fastify.register(require("fastify-static"), {
-    root: publicPath
-});
-fastify.get("/ping", function (request, reply) {
+
+fastify.get("/ping", async function (request, reply) {
     reply.send("pong");
 });
 

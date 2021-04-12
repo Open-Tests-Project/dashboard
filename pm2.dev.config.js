@@ -5,7 +5,7 @@ var config = require("./config");
 module.exports = {
   apps: [
     {
-      "name": "dev:" + config.APP_NAME + "-build-assets",
+      "name": "dev:" + config.APP_NAME + "-watch-assets",
       "script": "npm",
       "args": ["run", "watch"],
       "error_file": "./logs/pm2/dev_assets.error.log",
@@ -13,7 +13,7 @@ module.exports = {
     },
     {
       "name": "dev:" + config.APP_NAME + "-http-server",
-      "script": "./node_modules/.bin/nodemon ./server/http/index.js --config nodemon.json",
+      "script": "./node_modules/.bin/nodemon ./server/index.js --config nodemon.json",
       "error_file": "./logs/pm2/dev_http.error.log",
       "watch" : false,
       "namespace": config.APP_NAME

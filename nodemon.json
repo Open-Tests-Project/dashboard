@@ -2,6 +2,7 @@
   "ignore": ["public/**", "node_modules/**", "docs/**", "logs/**"],
   "ext": "js",
   "watch": [
-    "server/"
+    "server/**",
+    "config.js"
   ]
 }
