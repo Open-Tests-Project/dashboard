@@ -2,6 +2,7 @@
 
 var path = require("path");
 var fs = require("fs");
+var url = require("url");
 var config = require(path.resolve(process.cwd(), "config"));
 
 var { CleanWebpackPlugin } = require("clean-webpack-plugin");
@@ -20,6 +21,7 @@ var templatesPath = path.resolve(webRootPath, "client", "templates");
 var pagesPath = path.resolve(webRootPath, "client", "pages");
 
 const HANDMADE_LIVE_RELOAD = "handmade_live_reload";
+const WEBSOCKET_HOST = url.parse(config.BASE_URL).host;
 
 const PAGES = fs.readdirSync(pagesPath, {
     withFileTypes: true,
@@ -196,7 +198,8 @@ module.exports = function (env = {}) {
             new CspHtmlWebpackPlugin(
                 {
                 "default-src": "'self'",
-                "connect-src": "'self'",
+                    "connect-src": IS_PROD ? "'self'" :
+                        ["'self'", "ws://"+ WEBSOCKET_HOST +":3949", "https://"+ WEBSOCKET_HOST +":3949"],
                 "base-uri": "'none'", // not default-src fallback
                 "form-action": "'none'", // not default-src fallback
                 //"frame-ancestors": "'none'", // not default-src fallback but it's not possible to add via the meta tag
