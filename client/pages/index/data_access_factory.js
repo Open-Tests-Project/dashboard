@@ -1,13 +1,8 @@
 "use strict";
 
 var events = require("client/events");
-// const BASE_URL = window.BASE_URL;
 
 module.exports = {
-    exec: function (driver) {
-
-    },
-
     driver_options: function (driver, event, payload) {
 
         var options = {};

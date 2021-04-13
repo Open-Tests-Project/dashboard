@@ -1,8 +1,9 @@
 "use strict";
 
-var dataAccess = require("client/data_access/index");
+var DataAccess = require("client/DataAccess/index");
 
-module.exports = function (requestMapper) {
+module.exports = function (requestMapper, responseMapper, dataAccessFactory) {
+    var dataAccess = DataAccess(responseMapper, dataAccessFactory);
     return {
         exec: function (event, payload) {
             if (requestMapper.hasOwnProperty(event) && typeof requestMapper[event] === "function") {

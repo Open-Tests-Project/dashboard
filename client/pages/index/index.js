@@ -5,10 +5,11 @@ require("client/components/index");
 require("client/pages/index/presentation");
 var events = require("client/events");
 var requestMapper = require("client/pages/index/request_mapper");
+var responseMapper = require("client/pages/index/response_mapper");
+var dataAccessFactory = require("client/pages/index/data_access_factory");
 var Domain = require("client/Domain/index");
-var domain = Domain(requestMapper);
+var domain = Domain(requestMapper, responseMapper, dataAccessFactory);
 domain.exec(events.READ_USER);
-
 
 
 function move () {
