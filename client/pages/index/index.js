@@ -4,7 +4,9 @@
 require("client/components/index");
 require("client/pages/index/presentation");
 var events = require("client/events");
-var domain = require("client/domain/index");
+var requestMapper = require("client/pages/index/request_mapper");
+var Domain = require("client/Domain/index");
+var domain = Domain(requestMapper);
 domain.exec(events.READ_USER);
 
 
