@@ -1,0 +1,172 @@
+{    
+    "ENG" : {
+            
+        "enter_the_name" : "Enter the name of the participant:",
+        "partecipant_name_title" : "Participant's name:",
+        "start_button" : "Start",
+        "type" : "Implicit Association Test",
+        "title" : "Gender - Career IAT",
+        "left" : "left",
+        "right" : "right",
+        "continue_button" : "Continue",
+        "unknown" : "unknown",
+        
+        "attribute_A" : [
+                           "John",
+                           "Paul",
+                           "Mike",
+                           "Kevin",
+                           "Steve",
+                           "Greg",
+                           "Jeff",
+                           "Bill"
+                           ],
+        "attribute_B" : [
+                             "Amy",
+                             "Joan",
+                             "Lisa",
+                             "Sarah",
+                             "Diana",
+                             "Kate",
+                             "Ann",
+                             "Donna"
+                             ],
+        "target_A" : [
+                             "Executive",
+                             "Management",
+                             "Professional",
+                             "Corporation",
+                             "Salary",
+                             "Office",
+                             "Business",
+                             "Career"
+                             ],
+        "target_B" : [
+                             "Home",
+                             "Parents",
+                             "Children",
+                             "Family",
+                             "Cousin",
+                             "Marriage",
+                             "Wedding",
+                             "Relatives"
+                             ],
+        "attribute_A_label": "Male",
+        "attribute_B_label": "Female",
+        "target_A_label" : "Career",
+        "target_B_label" : "Family",
+        "or" : "or"
+        ,"intro1" : "Words representing the categories at the top will appear one-by-one in the middle of the screen. When the item belongs to a category on the left, press the button on the left; when the item belongs to a category on the right, press the button on the right. Items belong to only one category. If you make an error, an X will appear - fix the error by hitting the other button.\n\nThis is a timed sorting task.\nGO AS FAST AS YOU CAN while making as few mistakes as possible. Going too slow or making too many errors will result in an uninterpretable score. This task will take about 5 minutes to complete."
+        ,"intro2" : "See above, the categories have changed. The items for sorting have changed as well. The rules, however, are the same.\n\nWhen the item belongs to a category on the left, press the button on the left; when the item belongs to a category on the right, press the button on the right. Items belong to only one category. An X appears after an error - fix the error by hitting the other button. GO AS FAST AS YOU CAN."
+        ,"intro3" : "See above, the four categories you saw separately now appear together.\nRemember, each item belongs to only one group. For example, if the categories male and career appeared on the separate sides above - words meaning male would go in the male category, not the career category.\n\nThe green and white labels and items may help to identify the appropriate category. Use the left button and the right button to categorize items into four groups left and right, and correct errors by hitting the other button."
+        ,"intro4" : "Sort the same four categories again. Remember to go as fast as you can while making as few mistakes as possible.\n\nThe green and white labels and items may help to identify the appropriate category. Use the left button and right button to categorize items into the four groups left and right, and correct errors by hitting the other button."
+        ,"intro5" : "Notice above, there are only two categories and they have switched positions. The concept that was previously on the left is now on the right, and the concept that was on the right is now on the left. Practice this new configuration.\n\nUse the left button and right button to categorize items left and right,and correct errors by hitting the other button."
+        ,"intro6" : "See above, the four categories now appear together in a new configuration. Remember, each item belongs to only one group.\n\nThe green and white labels and items may help to identify the appropriate category. Use the left button and right button to categorize items into the four groups left and right, and correct errors by hitting the other button."
+        ,"intro7" : "Sort the same four categories again. Remember to go as fast as you can while making as few mistakes as possible.\n\nThe green and white labels and items may help to identify the appropriate category. Use the left button and right button to categorize items into the four groups left and right, and correct errors by hitting the other button."
+        
+        ,"your_d_score_is" : "Your IAT score (D-score) is:"
+        
+        ,"which_suggests" : "which suggests "
+        ,"final_text_01" : "a strong automatic association of Male with Career and Female with Family."
+        ,"final_text_02" : "a moderate automatic association of Male with Career and Female with Family."
+        ,"final_text_03" : "a slight automatic association of Male with Career and Female with Family."
+        ,"final_text_04" : "a little to no automatic preference between gender and family or career."
+        ,"final_text_05" : "a slight automatic association of Male with Family and Female with Career."
+        ,"final_text_06" : "a moderate automatic association of Male with Family and Female with Career."
+        ,"final_text_07" : "a strong automatic association of Male with Family and Female with Career."
+        
+        ,"link_text" : "For further information, please visit the Project Implicit website:<br>https://implicit.harvard.edu/implicit/"
+        
+        ,"test_not_valid" : "Test not valid: there were too many errors to determine a result."
+        
+    },
+    
+    
+    
+    
+    
+    
+    "ITA" : {
+            
+        "enter_the_name" : "Inserire il nome del partecipante:",
+        "partecipant_name_title" : "Nome del partecipante:",
+        "start_button" : "Inizio",
+        "type" : "Implicit Association Test",
+        "title" : "IAT Genere - Lavoro",
+        "left" : "sinistra",
+        "right" : "destra",
+        "continue_button" : "Continua",
+        "unknown" : "sconosciuto",
+        
+        "attribute_A" : [
+                           "Giovanni",
+                           "Paolo",
+                           "Michele",
+                           "Pietro",
+                           "Stefano",
+                           "Gregorio",
+                           "Sergio",
+                           "Antonio"
+                           ],
+        "attribute_B" : [
+                             "Maria",
+                             "Giovanna",
+                             "Elisa",
+                             "Sara",
+                             "Carla",
+                             "Caterina",
+                             "Anna",
+                             "Elena"
+                             ],
+        "target_A" : [
+                             "Dirigente",
+                             "Lavoro",
+                             "Professione",
+                             "Azienda",
+                             "Stipendio",
+                             "Ufficio",
+                             "Affari",
+                             "Carriera"
+                             ],
+        "target_B" : [
+                             "Casa",
+                             "Genitori",
+                             "Bambini",
+                             "Famiglia",
+                             "Cugini",
+                             "Matrimonio",
+                             "Nozze",
+                             "Parenti"
+                             ],
+        "attribute_A_label": "Maschi",
+        "attribute_B_label": "Femmine",
+        "target_A_label" : "Lavoro",
+        "target_B_label" : "Famiglia",
+        "or" : "o"
+        ,"intro1" : "Nella parte alta dello schermo sono indicate 2 categorie. Al centro dello schermo appariranno una serie di parole in successione appartenenti ad una delle 2 categorie. Quando la parola al centro appartiene alla categoria a sinistra, premete il bottone a sinistra; quando la parola al centro appartiene alla categoria a destra, premete il bottone a destra. Le parole al centro appartengono univocamente ad una categoria. Se commettete un errore, apparirà una X rossa: correggete l'errore premendo l'altro bottone.\n\nQuesto è un test a tempo: ESEGUITELO PIU' VELOCEMENTE CHE POTETE cercando di commmettere il minor numero di errori. Se andrete troppo lentamente o commeterete troppi errori, il test non sarà interpretabile.\nPer completare il test occorreranno circa 5 minuti."
+        ,"intro2" : "Guardate la parte in alto dello schermo: le categorie sono cambiate. Allo stesso modo, anche parole che appariranno al centro dello schermo sono cambiate. Tuttavia, le regole sono rimaste le stesse.\n\nQuando la parola al centro appartiene alla categoria a sinistra, premete il bottone a sinistra; quando la parola al centro appartiene alla categoria a destra, premete il bottone a destra. Le parole al centro appartengono univocamente ad una categoria. Se commettete un errore, apparirà una X rossa: correggete l'errore premendo l'altro bottone. ANDATE IL PIU' VELOCEMENTE POSSIBILE."
+        ,"intro3" : "Guardate la parte alta dello schermo: le 4 categorie che avete visto separatamente, ora appaiono insieme.\nRicordate, le parole che appariranno al centro dello schermo appartengono ad una sola categoria. Per esempio, se le categorie maschi e lavoro appaiono su lati diversi dello schermo, le parole che appartengono alla categoria maschi andranno nel lato della rispettiva categoria, non in quello della categoria lavoro.\n\nIl colore verde e bianco delle categorie e delle parole vi aiuteranno ad identificare la giusta categoria. Usate il bottone a sinistra ed il bottone a destra per assegnare le parole che appariranno al centro alle 4 categorie, alla sinistra e alla destra dello schermo, e correggete gli eventuali errori premendo l'altro bottone."
+        ,"intro4" : "Usate ancora le stesse 4 categorie. Ricordate di farlo il più velocemente possibile, commettendo il minor numero di errori.\n\nIl colore verde e bianco delle categorie e delle parole vi aiuteranno ad eseguire il compito. Usate il bottone a sinistra ed il bottone a destra per assegnare alle 4 categorie le parole che appariranno al centro dello schermo, e correggete gli eventuali errori premendo l'altro bottone."
+        ,"intro5" : "Notate ora che ci sono solo 2 categorie e che hanno invertito la loro posizione. La categoria che era precedentemente a sinistra ora è a destra e la categoria che era a destra ora è a sinistra. Fate pratica con questa nuova configurazione.\n\nUtilizzate il bottone sinistro ed il bottone destro per categorizzare gli elementi a sinistra e a destra, e correggete gli errori con l'altro bottone."
+        ,"intro6" : "Ora, le 4 categorie compaiono assieme in una nuova configurazione. Ricordate, ogni elemento appartiene solo ad una categoria.\n\nIl colore verde e bianco delle categorie e delle parole vi aiuteranno ad identificare la giusta categoria. Usate il bottone a sinistra ed il bottone a destra per assegnare le parole che appariranno al centro alle 4 categorie, alla sinistra e alla destra dello schermo, e correggete gli eventuali errori premendo l'altro bottone."
+        ,"intro7" : "Usate ancora le stesse 4 categorie. Ricordate di farlo il più velocemente possibile, commettendo il minor numero di errori.\n\nIl colore verde e bianco delle categorie e delle parole vi aiuteranno ad identificare la giusta categoria. Usate il bottone a sinistra ed il bottone a destra per assegnare le parole che appariranno al centro alle 4 categorie, alla sinistra e alla destra dello schermo, e correggete gli eventuali errori premendo l'altro bottone."
+        
+        ,"your_d_score_is" : "Il punteggio che hai ottenuto (D-score) è:"
+        
+        ,"which_suggests" : "che suggerisce "
+        ,"final_text_01" : "una forte associazione automatica ed inconscia tra Uomini e Lavoro e tra Donne e Famiglia."
+        ,"final_text_02" : "una moderata associazione automatica ed inconscia tra Uomini e Lavoro e tra Donne e Famiglia."
+        ,"final_text_03" : "una leggera associazione automatica ed inconscia tra Uomini e Lavoro e tra Donne e Famiglia."
+        ,"final_text_04" : "nessuna associazione automatica ed inconscia tra il genere (maschio o femmina) e la famiglia o il lavoro."
+        ,"final_text_05" : "una leggera associazione automatica ed inconscia tra Uomini e Famiglia e tra Donne e Lavoro."
+        ,"final_text_06" : "una moderata associazione automatica ed inconscia tra Uomini e Famiglia e tra Donne e Lavoro."
+        ,"final_text_07" : "una forte associazione automatica ed inconscia tra Uomini e Famiglia e tra Donne e Lavoro."
+        
+        ,"link_text" : "Per ulteriori informazioni potete visitare il sito del Project Implicit in lingua inglese:<br><br>https://implicit.harvard.edu/implicit<br><br>oppure il sito del progetto in italiano:<br><br>https://implicit.harvard.edu/implicit/italy"
+        
+        ,"test_not_valid" : "Prova non valida: ci sono troppi errori per determinare un risultato."
+        
+    }
+    
+}
+

@@ -4,6 +4,7 @@ var path = require("path");
 var fs = require("fs");
 var url = require("url");
 var config = require(path.resolve(process.cwd(), "config"));
+var webpack = require("webpack");
 
 var { CleanWebpackPlugin } = require("clean-webpack-plugin");
 var TerserPlugin = require("terser-webpack-plugin");
@@ -219,6 +220,10 @@ module.exports = function (env = {}) {
                     "script-src": true,
                     "style-src": false
                 }
+            }),
+            new webpack.DefinePlugin({
+                BASE_URL: JSON.stringify(`${config.BASE_URL}`),
+                LOGIN_URL: JSON.stringify(`${config.LOGIN_URL}`)
             })
         ].concat(htmlWebpackPluginCollection, devPlugins)
     };

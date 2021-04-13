@@ -28,10 +28,11 @@ fastify.decorate("authenticate", async function(request, reply) {
 fastify.decorate("authorize", async function(request, reply) {
     try {
         var user = request.user;
-        console.log(user)
-        // if (user.role === "admin") {
-        //     return;
-        // }
+        if (user.role !== "admin") {
+            var error = new Error("unauthorize");
+            error.unauthorized = true;
+            throw error;
+        }
         //
         // const scope = user.scope.split(",") || [];
         // var page = request.params.page;
