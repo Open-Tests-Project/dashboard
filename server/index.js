@@ -66,7 +66,8 @@ fastify.setErrorHandler(function (error, request, reply) {
         return reply.status(400).send(error);
     }
     if (error.unauthorized) {
-        return reply.status(401).send(error);
+        return reply.redirect(config.LOGIN_URL);
+        // return reply.status(401).send(error);
     }
 
     const IS_PROD = false;
