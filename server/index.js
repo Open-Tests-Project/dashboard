@@ -4,7 +4,6 @@ const path = require("path");
 const config = require(path.resolve(process.cwd(), "config"));
 const publicPath = path.resolve(process.cwd(), "public");
 const shared = require(path.resolve(process.cwd(), "shared"));
-
 const fastify = require("fastify")({
     logger: false
 });
@@ -65,8 +64,10 @@ fastify.setErrorHandler(function (error, request, reply) {
     if (error.validation) {
         return reply.status(400).send(error);
     }
-    if (error.unauthorized) {
-        return reply.redirect(config.LOGIN_URL);
+    if (error.unauthorized || error.name === "UnauthorizedError") {
+        // console.log(fs.existsSync(path.resolve(publicPath, "401")))
+        // 401
+        return reply.redirect(config.UNAUTHORIZED_URL);
         // return reply.status(401).send(error);
     }
 

@@ -23,6 +23,7 @@ var pagesPath = path.resolve(webRootPath, "client", "pages");
 
 const HANDMADE_LIVE_RELOAD = "handmade_live_reload";
 const WEBSOCKET_HOST = url.parse(config.BASE_URL).host;
+const TEMPLATE_FILE = "index.ejs";
 
 const PAGES = fs.readdirSync(pagesPath, {
     withFileTypes: true,
@@ -83,15 +84,23 @@ module.exports = function (env = {}) {
         if (!IS_PROD) {
             chunks.push(HANDMADE_LIVE_RELOAD);
         }
-        var filename;
+
+        var pagePath;
         if (page === "index") {
-            filename = path.resolve(publicPath, "index.html");
+            pagePath = publicPath;
         } else {
-            filename = path.resolve(publicPath, page, "index.html");
+            pagePath = path.resolve(publicPath, page);
+        }
+        var filename = path.resolve(pagePath, "index.html");
+        var template;
+        if (fs.existsSync(path.resolve(pagePath, TEMPLATE_FILE))) {
+            template = path.resolve(pagePath, TEMPLATE_FILE);
+        } else {
+            template = path.resolve(templatesPath, TEMPLATE_FILE);
         }
 
         var option = {
-            template:`${templatesPath}/index.ejs`,
+            template: template,
             chunks: chunks,
             // templateParameters: {
             //     constants: {
