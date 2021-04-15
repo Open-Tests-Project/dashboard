@@ -5,6 +5,7 @@ var factory = require("client/DataAccess/factory");
 
 const HTTP = "http"
 const DRIVER = HTTP;
+//const DRIVER = "socket";
 
 var client = require("client/drivers/" + DRIVER);
 
@@ -14,15 +15,31 @@ module.exports = function (responseMapper, customFactory) {
         Object.assign(factory, customFactory);
     }
 
-    return {
-        exec: function (event, payload) {
-            var driverOptions = factory.driver_options(DRIVER, event, payload);
-            var successCallback = factory.success_callback(event, responseMapper, eventEmitter);
-            var errorCallback = factory.error_callback();
+    if (DRIVER === HTTP) {
+        return {
+            exec: function (event, payload) {
+                var driverOptions = factory.driver_options(event, payload);
+                var successCallback = factory.success_callback(event, responseMapper, eventEmitter);
+                var errorCallback = factory.error_callback();
 
-            client(driverOptions)
-                .then(successCallback)
-                .catch(errorCallback);
-        }
-    };
+                client(driverOptions)
+                    .then(successCallback)
+                    .catch(errorCallback);
+            }
+        };
+    } else {
+
+        return {
+            exec: function (event, payload) {
+                var successCallback = factory.success_callback(event, responseMapper, eventEmitter);
+                var errorCallback = factory.error_callback();
+
+                client.then(event, successCallback);
+                client.catch(errorCallback);
+                client.socket.emit(event, payload);
+            }
+        };
+    }
+
+
 };

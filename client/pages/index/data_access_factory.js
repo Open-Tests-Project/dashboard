@@ -3,7 +3,7 @@
 var events = require("client/events");
 
 module.exports = {
-    driver_options: function (driver, event, payload) {
+    driver_options: function (event, payload) {
 
         var options = {};
         switch (event) {
