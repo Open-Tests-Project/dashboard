@@ -1,7 +1,6 @@
 "use strict";
 
 
-
 module.exports = function (element, container) {
     var x = 0;
     var y = 0;
@@ -25,7 +24,6 @@ module.exports = function (element, container) {
     };
 
     const mouseUpHandler = function() {
-        console.log("up")
         // Remove the handlers of `mousemove` and `mouseup`
         document.removeEventListener('mousemove', mouseMoveHandler);
         document.removeEventListener('mouseup', mouseUpHandler);
@@ -34,12 +32,10 @@ module.exports = function (element, container) {
         start: function () {
             x = 0;
             y = 0;
-
             element.addEventListener('mousedown', mouseDownHandler);
         },
         stop: function () {
-            console.log("stop")
-            element.addEventListener('mousedown', mouseDownHandler);
+            element.removeEventListener('mousedown', mouseDownHandler);
         }
     };
 };

@@ -32,18 +32,12 @@ function initLayout () {
 
     document.querySelector('input[name="move"]').addEventListener("change", function () {
         var checked = this.checked;
-        // var position = "static";
-        // if (this.checked) {
-        //     position = "absolute";
-        // }
+
         moverCollection.forEach(function (mover) {
             mover.stop();
         });
         moverCollection.length = 0;
         [].forEach.call(getArticles(), function (article) {
-            // article.style.position = position;
-            // mover.start(article, main)
-            //
             var mover = Mover(article, main);
             moverCollection.push(mover);
 
@@ -52,47 +46,11 @@ function initLayout () {
                 mover.start();
             } else {
                 article.style.position = "static";
-                // mover.stop();
+                mover.stop();
             }
 
         });
     });
 
 }
-// function activateMove (ele) {
-//     let x = 0;
-//     let y = 0;
-//
-//     var main = document.querySelector("main");
-//
-//
-//     const mouseDownHandler = function(e) {
-//
-//         y = e.clientY - ele.offsetTop;
-//         x = e.clientX - ele.offsetLeft;
-//
-//         // Attach the listeners to `document`
-//         document.addEventListener('mousemove', mouseMoveHandler);
-//         document.addEventListener('mouseup', mouseUpHandler);
-//     };
-//
-//     const mouseMoveHandler = function(e) {
-//         requestAnimationFrame(function () {
-//             console.log("move")
-//             ele.style.top = `${e.clientY - y}px`;
-//             ele.style.left = `${e.clientX - main.offsetLeft - x}px`;
-//         })
-//
-//     };
-//
-//     const mouseUpHandler = function() {
-//         console.log("up")
-//         // Remove the handlers of `mousemove` and `mouseup`
-//         document.removeEventListener('mousemove', mouseMoveHandler);
-//         document.removeEventListener('mouseup', mouseUpHandler);
-//     };
-//
-//     ele.addEventListener('mousedown', mouseDownHandler);
-// }
-
 window.onload = initLayout;
