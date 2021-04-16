@@ -3,14 +3,19 @@
 var events = require("client/events");
 
 module.exports = {
-    success_callback: function (event, responseMapper, eventEmitter) {
+    success_callback: function (event, responseMapper, done) {
         return function (response) {
             var data = response.hasOwnProperty("data") ? response.data : response;
             if (responseMapper.hasOwnProperty(event) && typeof responseMapper[event] === "function") {
                 data = responseMapper[event](data);
             }
-            eventEmitter.emit(event, data);
+            done(data);
         };
+    },
+    done: function (event, eventEmitter) {
+        return function (data) {
+            eventEmitter.emit(event, data);
+        }
     },
     error_callback: function () {
         return function (error) {

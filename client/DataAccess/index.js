@@ -19,7 +19,8 @@ module.exports = function (responseMapper, customFactory) {
         return {
             exec: function (event, payload) {
                 var driverOptions = factory.driver_options(event, payload);
-                var successCallback = factory.success_callback(event, responseMapper, eventEmitter);
+                var done = factory.done(event, eventEmitter);
+                var successCallback = factory.success_callback(event, responseMapper, done);
                 var errorCallback = factory.error_callback();
 
                 client(driverOptions)
@@ -27,11 +28,13 @@ module.exports = function (responseMapper, customFactory) {
                     .catch(errorCallback);
             }
         };
+
     } else {
 
         return {
             exec: function (event, payload) {
-                var successCallback = factory.success_callback(event, responseMapper, eventEmitter);
+                var done = factory.done(event, eventEmitter);
+                var successCallback = factory.success_callback(event, responseMapper, done);
                 var errorCallback = factory.error_callback();
 
                 client.then(event, successCallback);
