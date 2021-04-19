@@ -24,7 +24,6 @@ class Component extends HTMLElement {
     attributeChangedCallback(name, oldValue, newValue) {
         // name will always be "country" due to observedAttributes
         // this.country = newValue;
-        console.log(name, oldValue, newValue)
         this.render();
     }
     connectedCallback() {

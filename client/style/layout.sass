@@ -14,14 +14,19 @@ article
   //transition: all .1s ease
   //transform: translate(0px)
 article:focus
+  outline: none
+article.draggable
+  position: absolute
+article.draggable:focus
   border: 1px solid #e9e9eb
   outline: 3px dashed $bg-color
   z-index: 2
-  //position: absolute
+
 article
   header
     background: $bg-color
     color: $white
     padding: 2px 4px
+article.draggable
   header:hover
     cursor: grab

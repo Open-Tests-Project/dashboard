@@ -16,7 +16,6 @@ module.exports = function (element, container) {
     };
     const mouseMoveHandler = function(e) {
         requestAnimationFrame(function () {
-            console.log("move")
             element.style.top = `${e.clientY - y}px`;
             element.style.left = `${e.clientX - container.offsetLeft - x}px`;
         })
@@ -32,10 +31,10 @@ module.exports = function (element, container) {
         start: function () {
             x = 0;
             y = 0;
-            element.addEventListener('mousedown', mouseDownHandler);
+            element.querySelector("header").addEventListener('mousedown', mouseDownHandler);
         },
         stop: function () {
-            element.removeEventListener('mousedown', mouseDownHandler);
+            element.querySelector("header").removeEventListener('mousedown', mouseDownHandler);
         }
     };
 };

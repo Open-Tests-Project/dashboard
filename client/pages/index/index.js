@@ -11,13 +11,15 @@ var dataAccessFactory = require("client/pages/index/data_access_factory");
 var Domain = require("client/Domain/index");
 var domain = Domain(requestMapper, responseMapper, dataAccessFactory);
 domain.exec(events.READ_USER);
+domain.exec(events.READ_TESTS);
 
-
-function getArticles () {
-    return document.querySelectorAll("article");
-}
 
 function initLayout () {
+
+    function getArticles () {
+        return document.querySelectorAll("article");
+    }
+
     var main = document.querySelector("main");
     [].forEach.call(getArticles(), function (article) {
 
@@ -25,7 +27,6 @@ function initLayout () {
         article.style.left = (article.offsetLeft - parseInt(computedStyle.marginLeft, 10)) + "px";
         article.style.top = article.offsetTop + "px";
 
-        console.log(article.offsetTop)
     });
 
     var moverCollection = [];
@@ -42,10 +43,12 @@ function initLayout () {
             moverCollection.push(mover);
 
             if (checked) {
-                article.style.position = "absolute";
+                // article.style.position = "absolute";
+                article.classList.add("draggable");
                 mover.start();
             } else {
-                article.style.position = "static";
+                // article.style.position = "static";
+                article.classList.remove("draggable");
                 mover.stop();
             }
 
