@@ -85,16 +85,16 @@ module.exports = function (env = {}) {
             chunks.push(HANDMADE_LIVE_RELOAD);
         }
 
-        var pagePath;
+        var outputPath;
         if (page === "index") {
-            pagePath = publicPath;
+            outputPath = publicPath;
         } else {
-            pagePath = path.resolve(publicPath, page);
+            outputPath = path.resolve(publicPath, page);
         }
-        var filename = path.resolve(pagePath, "index.html");
+        var filename = path.resolve(outputPath, "index.html");
         var template;
-        if (fs.existsSync(path.resolve(pagePath, TEMPLATE_FILE))) {
-            template = path.resolve(pagePath, TEMPLATE_FILE);
+        if (fs.existsSync(path.resolve(pagesPath, page, TEMPLATE_FILE))) {
+            template = path.resolve(pagesPath, page, TEMPLATE_FILE);
         } else {
             template = path.resolve(templatesPath, TEMPLATE_FILE);
         }
