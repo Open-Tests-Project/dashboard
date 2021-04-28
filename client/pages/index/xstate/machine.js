@@ -1,5 +1,7 @@
 "use strict";
 
+var { assign } = require("xstate");
+
 // function transition (state, event) {
 //     var newState; // ......
 //     return newState;
@@ -23,7 +25,8 @@ module.exports = {
     id: "dashboard/index",
     initial: "idle",
     context: {
-        "tests": []
+        "tests": [],
+        "current_test": undefined
     },
     states: {
         idle: {
@@ -39,14 +42,24 @@ module.exports = {
             on: {
                 RESOLVE: {
                     target: "success",
-                    actions: ["loading_success"]
+                    actions: assign({
+                        tests: function (context, event) {
+                            // assign is a pure function (no side effects in it)
+                            return event.tests;
+                        },
+                        current_test: function (context, event) {
+                            if (event.tests.length === 1) {
+                                return event.tests[0];
+                            }
+                        }
+                    })
                 },
                 REJECT: 'failure'
             },
             exit: ["exit_loading"],
         },
         success: {
-
+            entry: ["entry_success"],
             // on: {
             //     FETCH: 'loading'
             // }

@@ -1,7 +1,5 @@
 "use strict";
 
-var { assign } = require("xstate");
-
 var events = require("client/events");
 var eventEmitter = require("client/pub_sub");
 
@@ -37,12 +35,12 @@ module.exports = {
         },
         exit_loading: function (context, event, actionMeta) {
             // console.log("exit loading", actionMeta.action.type, actionMeta.state.history.value)
-            var message = "exit"
+            var message = "";
             var header = document.querySelector("otp-header");
             header.message = message;
         },
-        loading_success: assign({
-            tests: function (context, event) {
+        entry_success: function (context, event, meta) {
+            if (event.hasOwnProperty("tests")) {
                 var data = event.tests;
                 var testsArticleMain = document.querySelector("#tests main");
                 var select = document.createElement("select");
@@ -55,9 +53,9 @@ module.exports = {
                 testsArticleMain.appendChild(select);
                 select.addEventListener("change", function () {
                     console.log(this.value)
-                })
-                return data;
+                });
             }
-        })
+
+        }
     }
 };

@@ -26,7 +26,11 @@ var machineInstance = Machine({
 });
 machineInstance.start();
 machineInstance.onTransition(function (state) {
-    console.log(/**state.changed,*/ state.value);
+    // if the state is changed, do actions with side effect
+    if (state.changed) {
+        console.log(state.value, state.context);
+    }
+
 // console.log(state.context);
 });
 machineInstance.send("LOAD_INITIAL_DATA")

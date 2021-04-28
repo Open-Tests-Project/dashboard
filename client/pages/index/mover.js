@@ -11,8 +11,8 @@ module.exports = function (element, container) {
         x = e.clientX - element.offsetLeft;
 
         // Attach the listeners to `document`
-        document.addEventListener('mousemove', mouseMoveHandler);
-        document.addEventListener('mouseup', mouseUpHandler);
+        document.body.addEventListener('mousemove', mouseMoveHandler);
+        document.body.addEventListener('mouseup', mouseUpHandler);
     };
     const mouseMoveHandler = function(e) {
         requestAnimationFrame(function () {
@@ -24,8 +24,8 @@ module.exports = function (element, container) {
 
     const mouseUpHandler = function() {
         // Remove the handlers of `mousemove` and `mouseup`
-        document.removeEventListener('mousemove', mouseMoveHandler);
-        document.removeEventListener('mouseup', mouseUpHandler);
+        document.body.removeEventListener('mousemove', mouseMoveHandler);
+        document.body.removeEventListener('mouseup', mouseUpHandler);
     };
     return {
         start: function () {

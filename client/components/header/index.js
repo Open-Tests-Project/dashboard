@@ -18,12 +18,13 @@ class Component extends HTMLElement {
     }
 
     static get observedAttributes() {
-        return ["user"];
+        return ["user", "message"];
     }
 
     attributeChangedCallback(name, oldValue, newValue) {
         // name will always be "country" due to observedAttributes
         // this.country = newValue;
+        // console.log(name, oldValue, newValue)
         this.render();
     }
     connectedCallback() {
@@ -46,9 +47,15 @@ class Component extends HTMLElement {
             this.setAttribute("user", v);
         }
     }
+    get message() {
+        return this.getAttribute("message");
+    }
+    set message (message) {
+        this.setAttribute("message", message);
+    }
 
     render() {
-
+        // console.log("####", this.message)
         this.nav.innerHTML = "";
         // Left as an exercise for the reader. But, you'll probably want to
         // check this.ownerDocument.defaultView to see if we've been
@@ -70,6 +77,14 @@ class Component extends HTMLElement {
             this.nav.appendChild(userText);
             this.nav.appendChild(roleText);
             this.nav.appendChild(logout);
+        }
+
+
+        if (this.message) {
+            var message = document.createElement("span");
+            message.className = "message";
+            message.innerText = this.message;
+            this.nav.appendChild(message);
         }
     }
 }
