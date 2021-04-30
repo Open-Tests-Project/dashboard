@@ -29,6 +29,10 @@ machineInstance.onTransition(function (state) {
     // if the state is changed, do actions with side effect
     if (state.changed) {
         console.log(state.value, state.context);
+        if (state.context.current_test) {
+            domain.exec(events.READ_TEST, state.context);
+        }
+
     }
 
 // console.log(state.context);

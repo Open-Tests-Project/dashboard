@@ -9,13 +9,16 @@ module.exports = {
         switch (event) {
             case events.READ_USER:
                 options.method = "get";
-                options.url = BASE_URL + "/api/whoami";
+                options.url = `${BASE_URL}/api/whoami`;
                 break;
             case events.READ_TESTS:
                 options.method = "get";
-                options.url = BASE_URL + "/api/tests";
+                options.url = `${BASE_URL}/api/tests`;
                 break;
-
+            case events.READ_TEST:
+                options.method = "get";
+                options.url = `${BASE_URL}/api/test/${payload.current_test}`;
+                break;
             default:
                 break;
         }
