@@ -26,53 +26,75 @@ module.exports = {
     initial: "idle",
     context: {
         "tests": [],
-        "current_test": undefined
+        "current_test": undefined,
+        "current_test_config": undefined,
+        "current_test_definition": undefined,
+        "current_test_lang": "ENG"
     },
     states: {
         idle: {
             on: {
-                LOAD_INITIAL_DATA: {
-                    target: "loading",
-                    actions: ["load_initial_data"]
+                LOAD_TESTS: {
+                    target: "loading_tests"
                 }
             }
         },
-        loading: {
-            entry: ["entry_loading"],
+        loading_tests: {
+            entry: ["start_loading_tests"],
             on: {
                 RESOLVE: {
-                    target: "success",
+                    target: "tests_loaded",
                     actions: assign({
                         tests: function (context, event) {
-                            // assign is a pure function (no side effects in it)
-                            return event.tests;
+                            return event.data;
                         },
                         current_test: function (context, event) {
-                            if (event.tests.length === 1) {
-                                return event.tests[0];
+                            if (event.data && event.data.length === 1) {
+                                return event.data[0];
                             }
                         }
                     })
                 },
-                REJECT: 'failure'
+                REJECT: {}
             },
-            exit: ["exit_loading"],
+            exit: ["render_tests"],
         },
-        success: {
-            entry: ["entry_success"],
-            // on: {
-            //     FETCH: 'loading'
-            // }
-        },
-        failure: {
+        loading_current_test_config: {
+            entry: ["start_loading_current_test"],
             on: {
-                RETRY: {
-                    target: 'loading',
-                    // actions: assign({
-                    //     retries: (context, event) => context.retries + 1
-                    // })
+                RESOLVE: {
+                    target: "idle",
+                    actions: assign({
+                        current_test_config: function (context, event) {
+                            return event.data;
+                        },
+                        current_test_definition: function (context, event) {
+                            if (event.data && Object.keys(event.data).length) {
+                                var config = event.data[Object.keys(event.data)[0]];
+                                if (config.hasOwnProperty(context.current_test_lang)) {
+                                    return config[context.current_test_lang];
+                                }
+
+                            }
+                        }
+                    })
+                },
+                REJECT: {}
+            },
+            exit: ["render_current_test_config"],
+        },
+        tests_loaded: {
+            always: [
+                {
+                    cond: function (context) {
+                        return context.current_test;
+                    },
+                    target: "loading_current_test_config"
+                },
+                {
+                    target: "idle"
                 }
-            }
+            ]
         }
     }
 };

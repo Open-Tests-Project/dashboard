@@ -13,35 +13,32 @@ var dataAccessFactory = require("client/pages/index/data_access_factory");
 var Domain = require("client/Domain/index");
 var domain = Domain(requestMapper, responseMapper, dataAccessFactory);
 domain.exec(events.READ_USER);
-// domain.exec(events.READ_TESTS);
 
-
-
+const domainActions = {
+    start_loading_tests: function () {
+        domain.exec(events.READ_TESTS);
+    },
+    start_loading_current_test: function (context) {
+        domain.exec(events.READ_TEST, context);
+    }
+}
 var machineInstance = Machine({
-    actions: Object.assign({}, presentation.actions, {
-        load_initial_data: function () {
-            domain.exec(events.READ_TESTS);
-        }
-    })
+    actions: Object.assign({}, presentation.actions, domainActions)
 });
 machineInstance.start();
+machineInstance.send("LOAD_TESTS");
 machineInstance.onTransition(function (state) {
     // if the state is changed, do actions with side effect
     if (state.changed) {
         console.log(state.value, state.context);
-        if (state.context.current_test) {
-            domain.exec(events.READ_TEST, state.context);
-        }
-
     }
 
-// console.log(state.context);
 });
-machineInstance.send("LOAD_INITIAL_DATA")
 eventEmitter.on(events.READ_TESTS, function (data) {
-    machineInstance.send("RESOLVE", {
-        tests: data
-    });
+    machineInstance.send("RESOLVE", {data});
+});
+eventEmitter.on(events.READ_TEST, function (data) {
+    machineInstance.send("RESOLVE", {data});
 });
 
 

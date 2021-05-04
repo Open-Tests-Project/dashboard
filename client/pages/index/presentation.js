@@ -39,9 +39,9 @@ module.exports = {
             var header = document.querySelector("otp-header");
             header.message = message;
         },
-        entry_success: function (context, event, meta) {
-            if (event.hasOwnProperty("tests")) {
-                var data = event.tests;
+        render_tests: function (context, event, meta) {
+            if (event.hasOwnProperty("data")) {
+                var data = event.data;
                 var testsArticleMain = document.querySelector("#tests main");
                 var select = document.createElement("select");
                 data.forEach(function (datum) {
@@ -56,6 +56,43 @@ module.exports = {
                 });
             }
 
+        },
+        render_current_test_config:function (context, event) {
+            if (event.hasOwnProperty("data")) {
+                var data = event.data;
+                var testsArticleMain = document.querySelector("#tests main");
+                var select = document.createElement("select");
+                Object.keys(data).forEach(function (key) {
+                    var option = document.createElement("option");
+                    option.value = key;
+                    option.innerText = key;
+                    select.appendChild(option);
+                });
+                testsArticleMain.appendChild(select);
+                select.addEventListener("change", function () {
+                    console.log(this.value)
+                });
+                var config = data[Object.keys(data)[0]];
+                var langSelect = document.createElement("select");
+                var languages = Object.keys(config);
+                languages.forEach(function (lang) {
+                    var option = document.createElement("option");
+                    option.value = lang;
+                    option.innerText = lang;
+                    langSelect.appendChild(option);
+                });
+                testsArticleMain.appendChild(langSelect);
+                langSelect.addEventListener("change", function () {
+                    console.log(this.value)
+                });
+
+                var currentConfig = config[context.current_test_lang];
+                var testDefinitionArticleMain = document.querySelector("#test-definition main");
+                var pre = document.createElement("pre");
+                pre.innerText = JSON.stringify(currentConfig, null, 2);
+                testDefinitionArticleMain.appendChild(pre);
+
+            }
         }
     }
 };
