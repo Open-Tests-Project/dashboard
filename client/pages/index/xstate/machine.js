@@ -40,7 +40,7 @@ module.exports = {
             }
         },
         loading_tests: {
-            entry: ["start_loading_tests"],
+            entry: ["entry_loading", "start_loading_tests"],
             on: {
                 RESOLVE: {
                     target: "tests_loaded",
@@ -57,10 +57,10 @@ module.exports = {
                 },
                 REJECT: {}
             },
-            exit: ["render_tests"],
+            exit: ["render_tests", "exit_loading"],
         },
         loading_current_test_config: {
-            entry: ["start_loading_current_test"],
+            entry: ["entry_loading", "start_loading_current_test"],
             on: {
                 RESOLVE: {
                     target: "idle",
@@ -74,14 +74,13 @@ module.exports = {
                                 if (config.hasOwnProperty(context.current_test_lang)) {
                                     return config[context.current_test_lang];
                                 }
-
                             }
                         }
                     })
                 },
                 REJECT: {}
             },
-            exit: ["render_current_test_config"],
+            exit: ["render_current_test_config", "exit_loading"],
         },
         tests_loaded: {
             always: [

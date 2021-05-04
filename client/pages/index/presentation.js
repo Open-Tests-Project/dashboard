@@ -28,7 +28,7 @@ eventEmitter.on(events.READ_USER, function (data) {
 module.exports = {
     actions: {
         entry_loading: function (context, event, actionMeta) {
-            // console.log("entry loading", actionMeta.action.type, actionMeta.state.value)
+            console.log("entry loading", actionMeta.action.type, actionMeta.state.value)
             var message = "loading ..."
             var header = document.querySelector("otp-header");
             header.message = message;
@@ -86,11 +86,46 @@ module.exports = {
                     console.log(this.value)
                 });
 
+                // ===================================================
+                var form = document.createElement("form");
+                var submit = document.createElement("input");
+                submit.type = "submit";
+                submit.value = "Save";
+                form.appendChild(submit);
                 var currentConfig = config[context.current_test_lang];
+                var fields = Object.keys(currentConfig);
                 var testDefinitionArticleMain = document.querySelector("#test-definition main");
-                var pre = document.createElement("pre");
-                pre.innerText = JSON.stringify(currentConfig, null, 2);
-                testDefinitionArticleMain.appendChild(pre);
+                fields.forEach(function (field) {
+                    var fieldValue = currentConfig[field];
+                    var input;
+                    if (typeof fieldValue === "object") {
+                        input = document.createElement("select");
+                        fieldValue.forEach(function (item) {
+                            var option = document.createElement("option");
+                            option.value = item;
+                            option.innerText = item;
+                            input.appendChild(option);
+                        });
+                    } else {
+                        if (fieldValue.length >=50) {
+                            input = document.createElement("textarea");
+                        } else {
+                            input = document.createElement("input");
+                            input.type = "text";
+                        }
+                        input.value = fieldValue;
+                        input.name = "field";
+                    }
+
+                    var label = document.createElement("label");
+                    label.innerText = field;
+                    label.appendChild(input);
+                    label.appendChild(document.createElement("br"));
+                    form.appendChild(label);
+                    testDefinitionArticleMain.appendChild(form);
+                    // testDefinitionArticleMain.appendChild();
+                });
+
 
             }
         }
