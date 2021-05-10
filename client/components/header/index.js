@@ -72,7 +72,7 @@ class Component extends HTMLElement {
 
             var logout = document.createElement("a");
             logout.innerText = "Logout";
-            logout.href = BASE_URL + "/api/logout/web?returnTo=https://dev.simonesacchi.com/auth/signin/";
+            logout.href =  `${BASE_URL}/api/logout/web?returnTo=${BASE_URL}/auth/signin/`;
 
             this.nav.appendChild(userText);
             this.nav.appendChild(roleText);
