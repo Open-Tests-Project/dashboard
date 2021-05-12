@@ -24,6 +24,46 @@ eventEmitter.on(events.READ_USER, function (data) {
 // });
 
 
+function _renderForm (currentConfig) {
+    var form = document.createElement("form");
+    var submit = document.createElement("input");
+    submit.type = "submit";
+    submit.value = "Save";
+    form.appendChild(submit);
+    var fields = Object.keys(currentConfig);
+    var testDefinitionArticleMain = document.querySelector("#test-definition main");
+    testDefinitionArticleMain.innerHTML = null;
+    fields.forEach(function (field) {
+        var fieldValue = currentConfig[field];
+        var input;
+        if (typeof fieldValue === "object") {
+            input = document.createElement("select");
+            fieldValue.forEach(function (item) {
+                var option = document.createElement("option");
+                option.value = item;
+                option.innerText = item;
+                input.appendChild(option);
+            });
+        } else {
+            if (fieldValue.length >=50) {
+                input = document.createElement("textarea");
+            } else {
+                input = document.createElement("input");
+                input.type = "text";
+            }
+            input.value = fieldValue;
+            input.name = "field";
+        }
+
+        var label = document.createElement("label");
+        label.innerText = field;
+        label.appendChild(input);
+        label.appendChild(document.createElement("br"));
+        form.appendChild(label);
+        testDefinitionArticleMain.appendChild(form);
+    });
+}
+
 
 module.exports = {
     actions: {
@@ -40,6 +80,7 @@ module.exports = {
             header.message = message;
         },
         render_tests: function (context, event, meta) {
+
             if (event.hasOwnProperty("data")) {
                 var data = event.data;
                 var testsArticleMain = document.querySelector("#tests main");
@@ -57,7 +98,8 @@ module.exports = {
             }
 
         },
-        render_current_test_config:function (context, event) {
+        render_current_test_config: function (context, event) {
+
             if (event.hasOwnProperty("data")) {
                 var data = event.data;
                 var testsArticleMain = document.querySelector("#tests main");
@@ -70,7 +112,7 @@ module.exports = {
                 });
                 testsArticleMain.appendChild(select);
                 select.addEventListener("change", function () {
-                    console.log(this.value)
+                    eventEmitter.emit(events.CHANGE_TEST, this.value);
                 });
                 var config = data[Object.keys(data)[0]];
                 var langSelect = document.createElement("select");
@@ -87,47 +129,15 @@ module.exports = {
                 });
 
                 // ===================================================
-                var form = document.createElement("form");
-                var submit = document.createElement("input");
-                submit.type = "submit";
-                submit.value = "Save";
-                form.appendChild(submit);
                 var currentConfig = config[context.current_test_lang];
-                var fields = Object.keys(currentConfig);
-                var testDefinitionArticleMain = document.querySelector("#test-definition main");
-                fields.forEach(function (field) {
-                    var fieldValue = currentConfig[field];
-                    var input;
-                    if (typeof fieldValue === "object") {
-                        input = document.createElement("select");
-                        fieldValue.forEach(function (item) {
-                            var option = document.createElement("option");
-                            option.value = item;
-                            option.innerText = item;
-                            input.appendChild(option);
-                        });
-                    } else {
-                        if (fieldValue.length >=50) {
-                            input = document.createElement("textarea");
-                        } else {
-                            input = document.createElement("input");
-                            input.type = "text";
-                        }
-                        input.value = fieldValue;
-                        input.name = "field";
-                    }
 
-                    var label = document.createElement("label");
-                    label.innerText = field;
-                    label.appendChild(input);
-                    label.appendChild(document.createElement("br"));
-                    form.appendChild(label);
-                    testDefinitionArticleMain.appendChild(form);
-                    // testDefinitionArticleMain.appendChild();
-                });
+                _renderForm(currentConfig);
 
 
             }
+        },
+        render_current_test_definition: function (context, event) {
+            _renderForm(context.current_test_definition);
         }
     }
 };

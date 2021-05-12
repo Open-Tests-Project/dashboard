@@ -40,8 +40,11 @@ eventEmitter.on(events.READ_TESTS, function (data) {
 eventEmitter.on(events.READ_TEST, function (data) {
     machineInstance.send("RESOLVE", {data});
 });
-
-
+eventEmitter.on(events.CHANGE_TEST, function (test) {
+    machineInstance.send("CHANGE_TEST", {
+        current_test_type: test
+    });
+});
 
 function initLayout () {
 

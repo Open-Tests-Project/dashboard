@@ -27,6 +27,7 @@ module.exports = {
     context: {
         "tests": [],
         "current_test": undefined,
+        "current_test_type": undefined,
         "current_test_config": undefined,
         "current_test_definition": undefined,
         "current_test_lang": "ENG"
@@ -36,6 +37,21 @@ module.exports = {
             on: {
                 LOAD_TESTS: {
                     target: "loading_tests"
+                },
+                CHANGE_TEST: {
+                    target: "test_changed",
+                    actions: assign({
+                        current_test_type: function (context, event) {
+                            return event.current_test_type;
+                        },
+                        current_test_definition: function (context, event) {
+                            var currentTestType = event.current_test_type;
+                            if (context.current_test_config.hasOwnProperty(currentTestType) &&
+                                context.current_test_config[currentTestType].hasOwnProperty(context.current_test_lang)) {
+                                return context.current_test_config[currentTestType][context.current_test_lang];
+                            }
+                        }
+                    })
                 }
             }
         },
@@ -68,6 +84,11 @@ module.exports = {
                         current_test_config: function (context, event) {
                             return event.data;
                         },
+                        current_test_type: function (context, event) {
+                            if (event.data && Object.keys(event.data).length) {
+                                return Object.keys(event.data)[0];
+                            }
+                        },
                         current_test_definition: function (context, event) {
                             if (event.data && Object.keys(event.data).length) {
                                 var config = event.data[Object.keys(event.data)[0]];
@@ -81,6 +102,15 @@ module.exports = {
                 REJECT: {}
             },
             exit: ["render_current_test_config", "exit_loading"],
+        },
+
+        test_changed: {
+            always: [
+                {
+                    target: "idle"
+                }
+            ],
+            exit: ["render_current_test_definition"]
         },
         tests_loaded: {
             always: [
