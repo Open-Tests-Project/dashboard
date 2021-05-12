@@ -30,6 +30,7 @@ module.exports = {
         "current_test_type": undefined,
         "current_test_config": undefined,
         "current_test_definition": undefined,
+        "current_test_languages": undefined,
         "current_test_lang": "ENG"
     },
     states: {
@@ -46,10 +47,39 @@ module.exports = {
                         },
                         current_test_definition: function (context, event) {
                             var currentTestType = event.current_test_type;
-                            if (context.current_test_config.hasOwnProperty(currentTestType) &&
-                                context.current_test_config[currentTestType].hasOwnProperty(context.current_test_lang)) {
-                                return context.current_test_config[currentTestType][context.current_test_lang];
+                            if (context.current_test_config.hasOwnProperty(currentTestType)) {
+                                if (context.current_test_config[currentTestType].hasOwnProperty(context.current_test_lang)) {
+                                    return context.current_test_config[currentTestType][context.current_test_lang];
+                                } else {
+                                    var currentLang = Object.keys(context.current_test_config[currentTestType])[0];
+                                    return context.current_test_config[currentTestType][currentLang];
+                                }
+
                             }
+                        },
+                        current_test_lang: function (context, event) {
+                            var currentTestType = event.current_test_type;
+                            if (context.current_test_config.hasOwnProperty(currentTestType)) {
+                                var currentLang = Object.keys(context.current_test_config[currentTestType])[0];
+                                return currentLang;
+                            }
+                        },
+                        current_test_languages: function (context, event) {
+                            var currentTestType = event.current_test_type;
+                            if (context.current_test_config.hasOwnProperty(currentTestType)) {
+                                return Object.keys(context.current_test_config[currentTestType]);
+                            }
+                        }
+                    })
+                },
+                CHANGE_LANG: {
+                    target: "test_changed",
+                    actions: assign({
+                        current_test_lang: function (context, event) {
+                            return event.current_test_lang;
+                        },
+                        current_test_definition: function (context, event) {
+                            return context.current_test_config[context.current_test_type][event.current_test_lang];
                         }
                     })
                 }
@@ -89,6 +119,12 @@ module.exports = {
                                 return Object.keys(event.data)[0];
                             }
                         },
+                        current_test_languages: function (context, event) {
+                            if (event.data && Object.keys(event.data).length) {
+                                var config = event.data[Object.keys(event.data)[0]];
+                                return Object.keys(config);
+                            }
+                        },
                         current_test_definition: function (context, event) {
                             if (event.data && Object.keys(event.data).length) {
                                 var config = event.data[Object.keys(event.data)[0]];
@@ -110,7 +146,7 @@ module.exports = {
                     target: "idle"
                 }
             ],
-            exit: ["render_current_test_definition"]
+            exit: ["render_current_test_definition", "render_lang_select"]
         },
         tests_loaded: {
             always: [

@@ -64,11 +64,28 @@ function _renderForm (currentConfig) {
     });
 }
 
+function _buildLangSelect (context) {
+    var languages = context.current_test_languages;
+    var langSelect = document.createElement("select");
+    langSelect.name = "lang-select";
+    languages.forEach(function (lang) {
+        var option = document.createElement("option");
+        option.value = lang;
+        option.selected = lang === context.current_test_lang;
+        option.innerText = lang;
+        langSelect.appendChild(option);
+    });
+    langSelect.addEventListener("change", function () {
+        eventEmitter.emit(events.CHANGE_LANG, this.value);
+    });
+    return langSelect;
+}
+
 
 module.exports = {
     actions: {
         entry_loading: function (context, event, actionMeta) {
-            console.log("entry loading", actionMeta.action.type, actionMeta.state.value)
+            // console.log("entry loading", actionMeta.action.type, actionMeta.state.value)
             var message = "loading ..."
             var header = document.querySelector("otp-header");
             header.message = message;
@@ -79,13 +96,13 @@ module.exports = {
             var header = document.querySelector("otp-header");
             header.message = message;
         },
-        render_tests: function (context, event, meta) {
+        render_tests: function (context) {
 
-            if (event.hasOwnProperty("data")) {
-                var data = event.data;
+            // if (context.hasOwnProperty("tests")) {
+                // var data = context.tests;
                 var testsArticleMain = document.querySelector("#tests main");
                 var select = document.createElement("select");
-                data.forEach(function (datum) {
+                context.tests.forEach(function (datum) {
                     var option = document.createElement("option");
                     option.value = datum;
                     option.innerText = datum;
@@ -95,16 +112,18 @@ module.exports = {
                 select.addEventListener("change", function () {
                     console.log(this.value)
                 });
-            }
+            // }
 
         },
-        render_current_test_config: function (context, event) {
+        render_current_test_config: function (context) {
 
-            if (event.hasOwnProperty("data")) {
-                var data = event.data;
+            // if (context.hasOwnProperty("current_test_config")) {
+                // var data = context.current_test_config;
                 var testsArticleMain = document.querySelector("#tests main");
+
+                // render test types
                 var select = document.createElement("select");
-                Object.keys(data).forEach(function (key) {
+                Object.keys(context.current_test_config).forEach(function (key) {
                     var option = document.createElement("option");
                     option.value = key;
                     option.innerText = key;
@@ -114,30 +133,22 @@ module.exports = {
                 select.addEventListener("change", function () {
                     eventEmitter.emit(events.CHANGE_TEST, this.value);
                 });
-                var config = data[Object.keys(data)[0]];
-                var langSelect = document.createElement("select");
-                var languages = Object.keys(config);
-                languages.forEach(function (lang) {
-                    var option = document.createElement("option");
-                    option.value = lang;
-                    option.innerText = lang;
-                    langSelect.appendChild(option);
-                });
-                testsArticleMain.appendChild(langSelect);
-                langSelect.addEventListener("change", function () {
-                    console.log(this.value)
-                });
 
-                // ===================================================
-                var currentConfig = config[context.current_test_lang];
+                // render languages select
+                testsArticleMain.appendChild(_buildLangSelect(context));
 
-                _renderForm(currentConfig);
+                // render form
+                _renderForm(context.current_test_definition);
 
-
-            }
+            // }
         },
-        render_current_test_definition: function (context, event) {
+        render_current_test_definition: function (context) {
             _renderForm(context.current_test_definition);
+        },
+        render_lang_select: function (context) {
+            var testsArticleMain = document.querySelector("#tests main");
+            var langSelect = testsArticleMain.querySelector(`select[name="lang-select"]`);
+            testsArticleMain.replaceChild(_buildLangSelect(context), langSelect);
         }
     }
 };
