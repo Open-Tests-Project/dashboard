@@ -83,6 +83,9 @@ module.exports = {
                             return context.current_test_config[context.current_test_type][event.current_test_lang];
                         }
                     })
+                },
+                CREATE_STUDY: {
+                    target: "creating_study"
                 }
             }
         },
@@ -141,6 +144,27 @@ module.exports = {
             exit: ["render_current_test_config", "exit_loading"],
         },
 
+        creating_study: {
+            entry: ["entry_loading", "start_creating_study"],
+            on: {
+                RESOLVE: {
+                    target: "idle",
+                    // actions: assign({
+                    //     tests: function (context, event) {
+                    //         return event.data;
+                    //     },
+                    //     current_test: function (context, event) {
+                    //         if (event.data && event.data.length === 1) {
+                    //             return event.data[0];
+                    //         }
+                    //     }
+                    // })
+                },
+                REJECT: {}
+            },
+            exit: ["exit_loading"]
+        },
+
         test_changed: {
             always: [
                 {
@@ -162,5 +186,7 @@ module.exports = {
                 }
             ]
         }
+
+
     }
 };

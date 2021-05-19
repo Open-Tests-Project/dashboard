@@ -2,9 +2,9 @@
 
 
 module.exports = {
+    CREATE_STUDY: "CREATE_STUDY",
     READ_USER: "READ_USER",
     READ_TESTS: "READ_TESTS",
-    READ_TEST: "READ_TEST",
     CHANGE_TEST: "CHANGE_TEST",
     CHANGE_LANG: "CHANGE_LANG",
 };

@@ -20,6 +20,9 @@ const domainActions = {
     },
     start_loading_current_test: function (context) {
         domain.exec(events.READ_TEST, context);
+    },
+    start_creating_study: function (context) {
+        domain.exec(events.CREATE_STUDY, context);
     }
 }
 var machineInstance = Machine({
@@ -50,6 +53,21 @@ eventEmitter.on(events.CHANGE_LANG, function (lang) {
         current_test_lang: lang
     });
 });
+
+window.addEventListener("load", function () {
+    var createStudyButton = document.querySelector("#studies button");
+    createStudyButton.addEventListener("click", function () {
+        console.log("click");
+        // machineInstance.send("CREATE_STud");
+    })
+});
+
+
+
+
+
+
+
 
 
 function initLayout () {
@@ -94,4 +112,5 @@ function initLayout () {
     });
 
 }
-window.onload = initLayout;
+
+window.addEventListener("load", initLayout);
