@@ -31,7 +31,8 @@ module.exports = {
         "current_test_config": undefined,
         "current_test_definition": undefined,
         "current_test_languages": undefined,
-        "current_test_lang": "ENG"
+        "current_test_lang": "ENG",
+        "current_test_readonly": true
     },
     states: {
         idle: {

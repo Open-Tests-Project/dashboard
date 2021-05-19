@@ -24,12 +24,17 @@ eventEmitter.on(events.READ_USER, function (data) {
 // });
 
 
-function _renderForm (currentConfig) {
+function _renderForm (context) {
+
+    var currentConfig = context.current_test_definition;
     var form = document.createElement("form");
     var submit = document.createElement("input");
     submit.type = "submit";
     submit.value = "Save";
-    form.appendChild(submit);
+    if (!context.current_test_readonly) {
+        form.appendChild(submit);
+    }
+
     var fields = Object.keys(currentConfig);
     var testDefinitionArticleMain = document.querySelector("#test-definition main");
     testDefinitionArticleMain.innerHTML = null;
@@ -38,6 +43,7 @@ function _renderForm (currentConfig) {
         var input;
         if (typeof fieldValue === "object") {
             input = document.createElement("select");
+            input.multiple = true;
             fieldValue.forEach(function (item) {
                 var option = document.createElement("option");
                 option.value = item;
@@ -55,6 +61,7 @@ function _renderForm (currentConfig) {
             input.name = "field";
         }
 
+        input.disabled = context.current_test_readonly;
         var label = document.createElement("label");
         label.innerText = field;
         label.appendChild(input);
@@ -138,12 +145,12 @@ module.exports = {
                 testsArticleMain.appendChild(_buildLangSelect(context));
 
                 // render form
-                _renderForm(context.current_test_definition);
+                _renderForm(context);
 
             // }
         },
         render_current_test_definition: function (context) {
-            _renderForm(context.current_test_definition);
+            _renderForm(context);
         },
         render_lang_select: function (context) {
             var testsArticleMain = document.querySelector("#tests main");
