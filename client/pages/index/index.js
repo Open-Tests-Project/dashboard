@@ -22,6 +22,7 @@ const domainActions = {
         domain.exec(events.READ_TEST, context);
     },
     start_creating_study: function (context) {
+        // study:simone:asjdkasjakjds
         domain.exec(events.CREATE_STUDY, context);
     }
 }
@@ -57,8 +58,7 @@ eventEmitter.on(events.CHANGE_LANG, function (lang) {
 window.addEventListener("load", function () {
     var createStudyButton = document.querySelector("#studies button");
     createStudyButton.addEventListener("click", function () {
-        console.log("click");
-        // machineInstance.send("CREATE_STud");
+        machineInstance.send("CREATE_STUDY");
     })
 });
 
