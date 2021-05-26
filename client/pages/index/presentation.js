@@ -166,6 +166,10 @@ module.exports = {
         render_current_test_definition: function (context) {
             _renderForm(context);
         },
-        render_lang_select: _renderLangSelect
+        render_lang_select: _renderLangSelect,
+        render_current_studies: function (context) {
+            console.log(context)
+            // todo simone render studies select in the studies main
+        }
     }
 };

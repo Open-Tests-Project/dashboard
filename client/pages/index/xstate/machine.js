@@ -32,7 +32,8 @@ module.exports = {
         "current_test_definition": undefined,
         "current_test_languages": undefined,
         "current_test_lang": "ENG",
-        "current_test_readonly": true
+        "current_test_readonly": true,
+        "current_test_studies": undefined
     },
     states: {
         idle: {
@@ -113,7 +114,7 @@ module.exports = {
             entry: ["entry_loading", "start_loading_current_test"],
             on: {
                 RESOLVE: {
-                    target: "idle",
+                    target: "loading_current_studies",
                     actions: assign({
                         current_test_config: function (context, event) {
                             return event.data;
@@ -141,7 +142,22 @@ module.exports = {
                 },
                 REJECT: {}
             },
-            exit: ["render_current_test_config", "exit_loading"],
+            exit: ["render_current_test_config"],
+        },
+        loading_current_studies: {
+            entry: ["start_loading_current_studies"],
+            on: {
+                RESOLVE: {
+                    target: "idle",
+                    actions: assign({
+                        current_test_studies: function (context, event) {
+                            return event.data;
+                        }
+                    })
+                },
+                REJECT: {}
+            },
+            exit: ["render_current_studies", "exit_loading"],
         },
 
         creating_study: {

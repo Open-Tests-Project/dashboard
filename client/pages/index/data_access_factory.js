@@ -13,7 +13,11 @@ module.exports = {
                 break;
             case events.READ_TESTS:
                 options.method = "get";
-                options.url = `${BASE_URL}/api/tests`;
+                options.url = `${BASE_URL}/api/test`;
+                break;
+            case events.READ_STUDIES:
+                options.method = "get";
+                options.url = `${BASE_URL}/api/study/${payload.current_test}`;
                 break;
             case events.READ_TEST:
                 options.method = "get";

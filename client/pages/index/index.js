@@ -21,6 +21,9 @@ const domainActions = {
     start_loading_current_test: function (context) {
         domain.exec(events.READ_TEST, context);
     },
+    start_loading_current_studies: function (context) {
+        domain.exec(events.READ_STUDIES, context);
+    },
     start_creating_study: function (context) {
         // study:simone:asjdkasjakjds
         domain.exec(events.CREATE_STUDY, context);
@@ -57,6 +60,10 @@ eventEmitter.on(events.CHANGE_LANG, function (lang) {
 eventEmitter.on(events.CREATE_STUDY, function (data) {
     machineInstance.send("RESOLVE", {data});
 });
+eventEmitter.on(events.READ_STUDIES, function (data) {
+    machineInstance.send("RESOLVE", {data});
+});
+
 
 window.addEventListener("load", function () {
     var createStudyButton = document.querySelector("#studies button");
