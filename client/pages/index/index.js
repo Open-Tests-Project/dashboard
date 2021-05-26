@@ -54,6 +54,9 @@ eventEmitter.on(events.CHANGE_LANG, function (lang) {
         current_test_lang: lang
     });
 });
+eventEmitter.on(events.CREATE_STUDY, function (data) {
+    machineInstance.send("RESOLVE", {data});
+});
 
 window.addEventListener("load", function () {
     var createStudyButton = document.querySelector("#studies button");

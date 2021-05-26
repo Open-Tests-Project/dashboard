@@ -71,10 +71,25 @@ function _renderForm (context) {
     });
 }
 
-function _buildLangSelect (context) {
+function _buildTestTypesSelect (context, name) {
+    var select = document.createElement("select");
+    select.name = name;
+    Object.keys(context.current_test_config).forEach(function (key) {
+        var option = document.createElement("option");
+        option.value = key;
+        option.innerText = key;
+        select.appendChild(option);
+    });
+    select.addEventListener("change", function () {
+        eventEmitter.emit(events.CHANGE_TEST, this.value);
+    });
+    return select;
+}
+
+function _buildLangSelect (context, name) {
     var languages = context.current_test_languages;
     var langSelect = document.createElement("select");
-    langSelect.name = "lang-select";
+    langSelect.name = name;
     languages.forEach(function (lang) {
         var option = document.createElement("option");
         option.value = lang;
@@ -88,6 +103,27 @@ function _buildLangSelect (context) {
     return langSelect;
 }
 
+function _renderTestTypesSelect (context) {
+    var testsArticleMain = document.querySelector("#tests main");
+    var name = "test-types";
+    var select = testsArticleMain.querySelector(`select[name="${name}"]`);
+    if (select) {
+        testsArticleMain.replaceChild(_buildTestTypesSelect(context, name), select);
+    } else {
+        testsArticleMain.appendChild(_buildTestTypesSelect(context, name));
+    }
+}
+
+function _renderLangSelect (context) {
+    var testsArticleMain = document.querySelector("#tests main");
+    var name = "lang";
+    var select = testsArticleMain.querySelector(`select[name="${name}"]`);
+    if (select) {
+        testsArticleMain.replaceChild(_buildLangSelect(context, name), select);
+    } else {
+        testsArticleMain.appendChild(_buildLangSelect(context, name));
+    }
+}
 
 module.exports = {
     actions: {
@@ -123,39 +159,13 @@ module.exports = {
 
         },
         render_current_test_config: function (context) {
-
-            // if (context.hasOwnProperty("current_test_config")) {
-                // var data = context.current_test_config;
-                var testsArticleMain = document.querySelector("#tests main");
-
-                // render test types
-                var select = document.createElement("select");
-                Object.keys(context.current_test_config).forEach(function (key) {
-                    var option = document.createElement("option");
-                    option.value = key;
-                    option.innerText = key;
-                    select.appendChild(option);
-                });
-                testsArticleMain.appendChild(select);
-                select.addEventListener("change", function () {
-                    eventEmitter.emit(events.CHANGE_TEST, this.value);
-                });
-
-                // render languages select
-                testsArticleMain.appendChild(_buildLangSelect(context));
-
-                // render form
-                _renderForm(context);
-
-            // }
+            _renderTestTypesSelect(context);
+            _renderLangSelect(context);
+            _renderForm(context);
         },
         render_current_test_definition: function (context) {
             _renderForm(context);
         },
-        render_lang_select: function (context) {
-            var testsArticleMain = document.querySelector("#tests main");
-            var langSelect = testsArticleMain.querySelector(`select[name="lang-select"]`);
-            testsArticleMain.replaceChild(_buildLangSelect(context), langSelect);
-        }
+        render_lang_select: _renderLangSelect
     }
 };

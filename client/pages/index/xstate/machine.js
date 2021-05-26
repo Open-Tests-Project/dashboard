@@ -149,20 +149,19 @@ module.exports = {
             on: {
                 RESOLVE: {
                     target: "idle",
-                    // actions: assign({
-                    //     tests: function (context, event) {
-                    //         return event.data;
-                    //     },
-                    //     current_test: function (context, event) {
-                    //         if (event.data && event.data.length === 1) {
-                    //             return event.data[0];
-                    //         }
-                    //     }
-                    // })
+                    actions: assign({
+                        current_test_readonly: function (context, event) {
+                            return false;
+                        },
+                        current_test_definition: function (context, event) {
+                            var testName = Object.keys(event.data)[0];
+                            return event.data[testName][context.current_test_type][context.current_test_lang];
+                        }
+                    })
                 },
                 REJECT: {}
             },
-            exit: ["exit_loading"]
+            exit: ["render_current_test_config", "exit_loading"]
         },
 
         test_changed: {
