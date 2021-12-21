@@ -1,7 +1,6 @@
 "use strict";
 
 var { assign } = require("xstate");
-const {studies} = require("../../../../texts");
 
 // function transition (state, event) {
 //     var newState; // ......
@@ -59,7 +58,6 @@ module.exports = {
                                     var currentLang = Object.keys(context.current_test_config[currentTestType])[0];
                                     return context.current_test_config[currentTestType][currentLang];
                                 }
-
                             }
                         },
                         current_test_lang: function (context, event) {
@@ -204,6 +202,11 @@ module.exports = {
                         current_study: function (context, event) {
                             var testName = Object.keys(event.data)[0];
                             return testName;
+                        },
+                        current_test_studies: function (context, event) {
+                            var testName = Object.keys(event.data)[0];
+                            context.current_test_studies[testName] = event.data[testName];
+                            return context.current_test_studies;
                         }
                     })
                 },
@@ -227,8 +230,18 @@ module.exports = {
                         },
                         current_study: function (context, event) {
                             var testName = Object.keys(event.data)[0];
-                            console.log(testName)
                             return testName;
+                        },
+                        current_test_studies: function (context, event) {
+                            var currentTestStudies = {};
+                            var studies = event.data;
+                            for (var studyName in studies) {
+                                var study = studies[studyName];
+                                if (study.hasOwnProperty(context.current_test_type)) {
+                                    currentTestStudies[studyName] = study;
+                                }
+                            }
+                            return currentTestStudies;
                         }
                     })
                 },

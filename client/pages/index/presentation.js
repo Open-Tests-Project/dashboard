@@ -243,9 +243,8 @@ module.exports = {
         },
         render_lang_select: _renderLangSelect,
         render_current_studies: function (context) {
-            var studiesArticleMain = document.querySelector("#studies main");
+            // var studiesArticleMain = document.querySelector("#studies main");
             // console.log(1,studiesArticleMain)
-            console.log(context)
             // _renderForm(context);
             _renderStudies(context);
             // todo simone render studies select in the studies main
