@@ -9,49 +9,13 @@ eventEmitter.on(events.READ_USER_DATA_ACCESS_RESULT, function (data) {
     header.user = data;
 });
 
-// eventEmitter.on(events.READ_TESTS, function (data) {
-//     var testsArticleMain = document.querySelector("#tests main");
-//     var select = document.createElement("select");
-//     data.forEach(function (datum) {
-//         var option = document.createElement("option");
-//         option.value = datum;
-//         option.innerText = datum;
-//         select.appendChild(option);
-//     });
-//     testsArticleMain.appendChild(select);
-//     select.addEventListener("change", function () {
-//         console.log(this.value)
-//     })
-// });
 
+function _renderForm (context, formContainer) {
 
-function _renderForm (context) {
+    formContainer.innerHTML = null;
 
-    if (context.current_study) {
-        var testDefinitionArticleHeader = document.querySelector("#test-definition header");
-        var text = testDefinitionArticleHeader.querySelector("span");
-        if (!text) {
-            text = document.createElement("span");
-            testDefinitionArticleHeader.appendChild(text);
-        }
-
-        text.innerText = "[" + context.current_study + "]";
-
-        var button = testDefinitionArticleHeader.querySelector("button");
-        if (!button) {
-            button = document.createElement("button");
-            button.innerText = texts.test_definition.button;
-            button.addEventListener("click", function (event) {
-                var studyName = document.querySelector('#test-definition input[name="study_name"]').value;
-                eventEmitter.emit(events.DELETE_STUDY, studyName);
-            });
-            testDefinitionArticleHeader.appendChild(button);
-        }
-        //
-        // var studyName = testDefinitionArticleHeader.querySelector("span") || document.createElement("span");
-        // studyName.innerText = "[" + context.current_study + "]";
-        // testDefinitionArticleHeader.replaceChild(studyName, testDefinitionArticleHeader.querySelector("span"));
-
+    if (!context.current_study && !context.current_test_readonly) {
+        return;
     }
 
     var currentConfig = context.current_test_definition;
@@ -62,6 +26,14 @@ function _renderForm (context) {
         submit.type = "submit";
         submit.value = "Save";
         form.appendChild(submit);
+        // delete study button
+        var button = document.createElement("button");
+        button.innerText = texts.test_definition.button;
+        button.addEventListener("click", function (event) {
+            eventEmitter.emit(events.DELETE_STUDY, context.current_study);
+        });
+        formContainer.appendChild(button);
+
         var studyName = document.createElement("input");
         studyName.type = "hidden";
         studyName.name = "study_name";
@@ -70,8 +42,7 @@ function _renderForm (context) {
     }
 
     var fields = Object.keys(currentConfig);
-    var testDefinitionArticleMain = document.querySelector("#test-definition main");
-    testDefinitionArticleMain.innerHTML = null;
+
     fields.forEach(function (field) {
         var fieldValue = currentConfig[field];
         var input;
@@ -101,7 +72,7 @@ function _renderForm (context) {
         label.appendChild(input);
         label.appendChild(document.createElement("br"));
         form.appendChild(label);
-        testDefinitionArticleMain.appendChild(form);
+        formContainer.appendChild(form);
     });
 }
 
@@ -181,10 +152,10 @@ function _renderStudy (context) {
     var header = document.querySelector("#study header");
     var main = document.querySelector("#study main");
 
+    // study name
     var studyName = header.querySelector("span");
     if (!studyName) {
         studyName = document.createElement("span");
-        studyName.innerText = context.current_study;
         studyName.className = "renamable";
         studyName.addEventListener("mousedown", function () {
             this.setAttribute("contenteditable", true);
@@ -194,6 +165,16 @@ function _renderStudy (context) {
         });
         header.appendChild(studyName);
     }
+    studyName.innerText = context.current_study;
+
+
+
+
+    if (!context.current_study) {
+        header.removeChild(studyName);
+    }
+
+
 }
 
 function _buildStudiesSelect (context, name) {
@@ -251,15 +232,15 @@ module.exports = {
         render_current_test_config: function (context) {
             _renderTestTypesSelect(context);
             _renderLangSelect(context);
-            _renderForm(context);
+            _renderForm(context, document.querySelector("#test-definition main"));
         },
         render_current_study: function (context) {
-            _renderForm(context);
+            _renderStudy(context);
+            _renderForm(context, document.querySelector("#study main"));
             _renderStudies(context);
-
         },
         render_current_test_definition: function (context) {
-            _renderForm(context);
+            _renderForm(context, document.querySelector("#test-definition main"));
             _renderStudy(context);
         },
         render_lang_select: _renderLangSelect,
