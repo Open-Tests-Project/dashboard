@@ -177,6 +177,25 @@ function _renderStudies (context) {
     studiesArticleMain.appendChild(button);
 }
 
+function _renderStudy (context) {
+    var header = document.querySelector("#study header");
+    var main = document.querySelector("#study main");
+
+    var studyName = header.querySelector("span");
+    if (!studyName) {
+        studyName = document.createElement("span");
+        studyName.innerText = context.current_study;
+        studyName.className = "renamable";
+        studyName.addEventListener("mousedown", function () {
+            this.setAttribute("contenteditable", true);
+        });
+        studyName.addEventListener("blur", function () {
+            console.log(this.innerText.trim())
+        });
+        header.appendChild(studyName);
+    }
+}
+
 function _buildStudiesSelect (context, name) {
     var studies = context.current_test_studies;
     var select = document.createElement("select");
@@ -237,17 +256,15 @@ module.exports = {
         render_current_study: function (context) {
             _renderForm(context);
             _renderStudies(context);
+
         },
         render_current_test_definition: function (context) {
             _renderForm(context);
+            _renderStudy(context);
         },
         render_lang_select: _renderLangSelect,
         render_current_studies: function (context) {
-            // var studiesArticleMain = document.querySelector("#studies main");
-            // console.log(1,studiesArticleMain)
-            // _renderForm(context);
             _renderStudies(context);
-            // todo simone render studies select in the studies main
         }
     }
 };

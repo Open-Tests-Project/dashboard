@@ -14,7 +14,6 @@ module.exports = {
     },
     done: function (event, eventEmitter) {
         return function (data) {
-            console.log(event + shared.DATA_ACCESS_RESULT)
             eventEmitter.emit(event + shared.DATA_ACCESS_RESULT, data);
         }
     },

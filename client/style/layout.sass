@@ -13,6 +13,8 @@ article
   border-radius: 3px
   background: #e9e9eb
   max-height: 85vh
+  min-width: 200px
+  min-height: 80px
   overflow: auto
   // new layout without coloumns
   display: inline-block
@@ -34,6 +36,8 @@ article
     background: $bg-color
     color: $white
     padding: 2px 4px
+    .renamable::before
+      content: " - "
 article.draggable
   header:hover
     cursor: grab
