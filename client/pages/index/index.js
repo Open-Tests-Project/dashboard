@@ -27,6 +27,12 @@ const domainActions = {
     start_creating_study: function (context) {
         // study:simone:asjdkasjakjds
         domain.exec(events.CREATE_STUDY, context);
+    },
+    start_deleting_study: function (context, event) {
+        domain.exec(events.DELETE_STUDY, {
+            study_name: event.study_to_be_deleted,
+            test_name: context.current_test
+        });
     }
 }
 var machineInstance = Machine({
@@ -37,14 +43,15 @@ machineInstance.send("LOAD_TESTS");
 machineInstance.onTransition(function (state) {
     // if the state is changed, do actions with side effect
     if (state.changed) {
-        console.log(state.value, state.context);
+        // todo simone dev
+        // console.log(state.value, state.context);
     }
 
 });
-eventEmitter.on(events.READ_TESTS, function (data) {
+eventEmitter.on(events.READ_TESTS_DATA_ACCESS_RESULT, function (data) {
     machineInstance.send("RESOLVE", {data});
 });
-eventEmitter.on(events.READ_TEST, function (data) {
+eventEmitter.on(events.READ_TEST_DATA_ACCESS_RESULT, function (data) {
     machineInstance.send("RESOLVE", {data});
 });
 eventEmitter.on(events.CHANGE_TEST, function (test) {
@@ -52,15 +59,30 @@ eventEmitter.on(events.CHANGE_TEST, function (test) {
         current_test_type: test
     });
 });
+eventEmitter.on(events.CHANGE_STUDY, function (study) {
+    machineInstance.send(events.CHANGE_STUDY, {
+        current_study: study
+    });
+});
 eventEmitter.on(events.CHANGE_LANG, function (lang) {
     machineInstance.send(events.CHANGE_LANG, {
         current_test_lang: lang
     });
 });
-eventEmitter.on(events.CREATE_STUDY, function (data) {
+eventEmitter.on(events.CREATE_STUDY_DATA_ACCESS_RESULT, function (data) {
+    machineInstance.send("RESOLVE", {data});
+    //machineInstance.send("CREATE_STUDY");
+});
+eventEmitter.on(events.DELETE_STUDY_DATA_ACCESS_RESULT, function (data) {
     machineInstance.send("RESOLVE", {data});
 });
-eventEmitter.on(events.READ_STUDIES, function (data) {
+eventEmitter.on(events.DELETE_STUDY, function (studyName) {
+    machineInstance.send(events.DELETE_STUDY, {
+        study_to_be_deleted: studyName
+    });
+});
+
+eventEmitter.on(events.READ_STUDIES_DATA_ACCESS_RESULT, function (data) {
     machineInstance.send("RESOLVE", {data});
 });
 
@@ -71,9 +93,6 @@ window.addEventListener("load", function () {
         machineInstance.send("CREATE_STUDY");
     })
 });
-
-
-
 
 
 

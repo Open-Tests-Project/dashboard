@@ -1,6 +1,6 @@
 "use strict";
 
-var events = require("client/events");
+var shared = require("/shared");
 
 module.exports = {
     success_callback: function (event, responseMapper, done) {
@@ -14,7 +14,8 @@ module.exports = {
     },
     done: function (event, eventEmitter) {
         return function (data) {
-            eventEmitter.emit(event, data);
+            console.log(event + shared.DATA_ACCESS_RESULT)
+            eventEmitter.emit(event + shared.DATA_ACCESS_RESULT, data);
         }
     },
     error_callback: function () {

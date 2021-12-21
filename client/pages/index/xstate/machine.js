@@ -1,6 +1,7 @@
 "use strict";
 
 var { assign } = require("xstate");
+const {studies} = require("../../../../texts");
 
 // function transition (state, event) {
 //     var newState; // ......
@@ -33,7 +34,9 @@ module.exports = {
         "current_test_languages": undefined,
         "current_test_lang": "ENG",
         "current_test_readonly": true,
-        "current_test_studies": undefined
+        "current_test_studies": undefined,
+        "studies": undefined,
+        "current_study": undefined
     },
     states: {
         idle: {
@@ -87,7 +90,21 @@ module.exports = {
                 },
                 CREATE_STUDY: {
                     target: "creating_study"
-                }
+                },
+                CHANGE_STUDY: {
+                    target: "study_changed",
+                    actions: assign({
+                        current_study: function (context, event) {
+                            return event.current_study;
+                        },
+                        current_test_readonly: function (context, event) {
+                            return false;
+                        }
+                    })
+                },
+                DELETE_STUDY: {
+                    target: "deleting_study"
+                },
             }
         },
         loading_tests: {
@@ -151,8 +168,19 @@ module.exports = {
                     target: "idle",
                     actions: assign({
                         current_test_studies: function (context, event) {
+                            var currentTestStudies = {};
+                            var studies = event.data;
+                            for (var studyName in studies) {
+                                var study = studies[studyName];
+                                if (study.hasOwnProperty(context.current_test_type)) {
+                                    currentTestStudies[studyName] = study;
+                                }
+                            }
+                            return currentTestStudies;
+                        },
+                        studies: function (context, event) {
                             return event.data;
-                        }
+                        },
                     })
                 },
                 REJECT: {}
@@ -172,12 +200,41 @@ module.exports = {
                         current_test_definition: function (context, event) {
                             var testName = Object.keys(event.data)[0];
                             return event.data[testName][context.current_test_type][context.current_test_lang];
+                        },
+                        current_study: function (context, event) {
+                            var testName = Object.keys(event.data)[0];
+                            return testName;
                         }
                     })
                 },
                 REJECT: {}
             },
-            exit: ["render_current_test_config", "exit_loading"]
+            exit: ["render_current_study", "exit_loading"]
+        },
+
+        deleting_study: {
+            entry: ["entry_loading", "start_deleting_study"],
+            on: {
+                RESOLVE: {
+                    target: "idle",
+                    actions: assign({
+                        current_test_readonly: function (context, event) {
+                            return false;
+                        },
+                        current_test_definition: function (context, event) {
+                            var testName = Object.keys(event.data)[0];
+                            return event.data[testName][context.current_test_type][context.current_test_lang];
+                        },
+                        current_study: function (context, event) {
+                            var testName = Object.keys(event.data)[0];
+                            console.log(testName)
+                            return testName;
+                        }
+                    })
+                },
+                REJECT: {}
+            },
+            exit: ["render_current_study", "exit_loading"]
         },
 
         test_changed: {
@@ -187,6 +244,14 @@ module.exports = {
                 }
             ],
             exit: ["render_current_test_definition", "render_lang_select"]
+        },
+        study_changed: {
+            always: [
+                {
+                    target: "idle"
+                }
+            ],
+            exit: ["render_current_test_definition"]
         },
         tests_loaded: {
             always: [

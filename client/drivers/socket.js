@@ -1,5 +1,6 @@
 "use strict";
 
+const shared = require("/shared");
 const io = require("socket.io-client");
 const socket = io(BASE_URL, {
     "path": "/socket.io/api"
@@ -18,7 +19,7 @@ module.exports = {
     io: io,
     socket: socket,
     then: function (requestEvent, callback) {
-        var responseEvent = requestEvent + "_RESULT";
+        var responseEvent = requestEvent + shared.DATA_ACCESS_RESULT;
         if (registeredEvents.indexOf(responseEvent) === -1) {
             registeredEvents.push(responseEvent);
             socket.on(responseEvent, callback);
