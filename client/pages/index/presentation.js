@@ -160,11 +160,8 @@ function _renderLangSelect (context) {
 }
 
 function _renderStudies (context) {
-    // +++
-    return;
     var studiesArticleMain = document.querySelector("#studies main");
     var name = "studies";
-    // var currentStudy = context.current_study;
     studiesArticleMain.innerHTML = "";
     var button = document.createElement("button");
     button.innerText = texts.studies.button;

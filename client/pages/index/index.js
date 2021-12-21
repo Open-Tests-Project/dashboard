@@ -71,7 +71,9 @@ eventEmitter.on(events.CHANGE_LANG, function (lang) {
 });
 eventEmitter.on(events.CREATE_STUDY_DATA_ACCESS_RESULT, function (data) {
     machineInstance.send("RESOLVE", {data});
-    //machineInstance.send("CREATE_STUDY");
+});
+eventEmitter.on(events.CREATE_STUDY, function () {
+    machineInstance.send("CREATE_STUDY");
 });
 eventEmitter.on(events.DELETE_STUDY_DATA_ACCESS_RESULT, function (data) {
     machineInstance.send("RESOLVE", {data});
@@ -87,12 +89,12 @@ eventEmitter.on(events.READ_STUDIES_DATA_ACCESS_RESULT, function (data) {
 });
 
 
-window.addEventListener("load", function () {
-    var createStudyButton = document.querySelector("#studies button");
-    createStudyButton.addEventListener("click", function () {
-        machineInstance.send("CREATE_STUDY");
-    })
-});
+// window.addEventListener("load", function () {
+//     var createStudyButton = document.querySelector("#studies button");
+//     createStudyButton.addEventListener("click", function () {
+//         machineInstance.send("CREATE_STUDY");
+//     })
+// });
 
 
 

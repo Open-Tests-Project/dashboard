@@ -25,12 +25,11 @@ module.exports = {
             case events.CREATE_STUDY:
                 options.method = "post";
                 options.url = `${BASE_URL}/api/study/${payload.test_name}`;
-                options.data = payload;
+                options.data = payload.study;
                 break;
             case events.DELETE_STUDY:
                 options.method = "delete";
                 options.url = `${BASE_URL}/api/study/${payload.test_name}/${payload.study_name}`;
-                options.data = payload;
                 break;
             default:
                 break;
