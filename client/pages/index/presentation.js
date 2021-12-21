@@ -150,7 +150,6 @@ function _renderStudies (context) {
 
 function _renderStudy (context) {
     var header = document.querySelector("#study header");
-    var main = document.querySelector("#study main");
 
     // study name
     var studyName = header.querySelector("span");
@@ -161,13 +160,16 @@ function _renderStudy (context) {
             this.setAttribute("contenteditable", true);
         });
         studyName.addEventListener("blur", function () {
-            console.log(this.innerText.trim())
+            var newName = this.innerText.trim();
+            eventEmitter.emit(events.RENAME_STUDY, {
+                new_name: newName,
+                old_name: context.current_study,
+                current_test: context.current_test
+            });
         });
         header.appendChild(studyName);
     }
     studyName.innerText = context.current_study;
-
-
 
 
     if (!context.current_study) {
@@ -211,23 +213,18 @@ module.exports = {
             header.message = message;
         },
         render_tests: function (context) {
-
-            // if (context.hasOwnProperty("tests")) {
-                // var data = context.tests;
-                var testsArticleMain = document.querySelector("#tests main");
-                var select = document.createElement("select");
-                context.tests.forEach(function (datum) {
-                    var option = document.createElement("option");
-                    option.value = datum;
-                    option.innerText = datum;
-                    select.appendChild(option);
-                });
-                testsArticleMain.appendChild(select);
-                select.addEventListener("change", function () {
-                    console.log(this.value)
-                });
-            // }
-
+            var testsArticleMain = document.querySelector("#tests main");
+            var select = document.createElement("select");
+            context.tests.forEach(function (datum) {
+                var option = document.createElement("option");
+                option.value = datum;
+                option.innerText = datum;
+                select.appendChild(option);
+            });
+            testsArticleMain.appendChild(select);
+            select.addEventListener("change", function () {
+                console.log(this.value)
+            });
         },
         render_current_test_config: function (context) {
             _renderTestTypesSelect(context);
@@ -240,7 +237,7 @@ module.exports = {
             _renderStudies(context);
         },
         render_current_test_definition: function (context) {
-            _renderForm(context, document.querySelector("#test-definition main"));
+            _renderForm(context, document.querySelector("#study main"));
             _renderStudy(context);
         },
         render_lang_select: _renderLangSelect,

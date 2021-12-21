@@ -33,7 +33,15 @@ const domainActions = {
             study_name: event.study_to_be_deleted,
             test_name: context.current_test
         });
+    },
+    start_renaming_study: function (context, event) {
+        domain.exec(events.RENAME_STUDY, {
+            new_name: event.new_name,
+            old_name: event.old_name,
+            current_test: event.current_test
+        });
     }
+
 }
 var machineInstance = Machine({
     actions: Object.assign({}, presentation.actions, domainActions)
@@ -82,6 +90,13 @@ eventEmitter.on(events.DELETE_STUDY, function (studyName) {
     machineInstance.send(events.DELETE_STUDY, {
         study_to_be_deleted: studyName
     });
+});
+
+eventEmitter.on(events.RENAME_STUDY, function (payload) {
+    machineInstance.send(events.RENAME_STUDY, payload);
+});
+eventEmitter.on(events.RENAME_STUDY_DATA_ACCESS_RESULT, function (data) {
+    machineInstance.send("RESOLVE", {data});
 });
 
 eventEmitter.on(events.READ_STUDIES_DATA_ACCESS_RESULT, function (data) {

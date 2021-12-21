@@ -5,6 +5,7 @@ var shared = require("/shared");
 var events = {
     CREATE_STUDY: "CREATE_STUDY",
     DELETE_STUDY: "DELETE_STUDY",
+    RENAME_STUDY: "RENAME_STUDY",
     READ_USER: "READ_USER",
     READ_TESTS: "READ_TESTS",
     READ_TEST: "READ_TEST",
@@ -16,6 +17,7 @@ var events = {
 var dataAccessRelatedEvents = [
     "CREATE_STUDY",
     "DELETE_STUDY",
+    "RENAME_STUDY",
     "READ_USER",
     "READ_TESTS",
     "READ_TEST",

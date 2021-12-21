@@ -31,6 +31,13 @@ module.exports = {
                 options.method = "delete";
                 options.url = `${BASE_URL}/api/study/${payload.test_name}/${payload.study_name}`;
                 break;
+            case events.RENAME_STUDY:
+                options.method = "put";
+                options.url = `${BASE_URL}/api/study/${payload.current_test}/${payload.old_name}`;
+                options.data = {
+                    new_name: payload.new_name
+                };
+                break;
             default:
                 break;
         }
