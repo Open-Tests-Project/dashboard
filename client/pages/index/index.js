@@ -10,6 +10,7 @@ var Mover = require("client/pages/index/mover");
 var requestMapper = require("client/pages/index/request_mapper");
 var responseMapper = require("client/pages/index/response_mapper");
 var dataAccessFactory = require("client/pages/index/data_access_factory");
+var Router = require("client/pages/index/router");
 var Domain = require("client/Domain/index");
 var domain = Domain(requestMapper, responseMapper, dataAccessFactory);
 domain.exec(events.READ_USER);
@@ -46,6 +47,7 @@ const domainActions = {
 var machineInstance = Machine({
     actions: Object.assign({}, presentation.actions, domainActions)
 });
+var router = Router(machineInstance);
 machineInstance.start();
 machineInstance.send("LOAD_TESTS");
 machineInstance.onTransition(function (state) {
@@ -55,7 +57,13 @@ machineInstance.onTransition(function (state) {
         // console.log(state.value, state.context);
     }
 
+    if (state.value === "idle") {
+        router.init();
+    }
 });
+
+
+
 eventEmitter.on(events.READ_TESTS_DATA_ACCESS_RESULT, function (data) {
     machineInstance.send("RESOLVE", {data});
 });
@@ -68,9 +76,7 @@ eventEmitter.on(events.CHANGE_TEST, function (test) {
     });
 });
 eventEmitter.on(events.CHANGE_STUDY, function (study) {
-    machineInstance.send(events.CHANGE_STUDY, {
-        current_study: study
-    });
+    router.redirect('/study/' + study);
 });
 eventEmitter.on(events.CHANGE_LANG, function (lang) {
     machineInstance.send(events.CHANGE_LANG, {
@@ -78,12 +84,14 @@ eventEmitter.on(events.CHANGE_LANG, function (lang) {
     });
 });
 eventEmitter.on(events.CREATE_STUDY_DATA_ACCESS_RESULT, function (data) {
+    router.redirect('/study/' + Object.keys(data)[0]);
     machineInstance.send("RESOLVE", {data});
 });
 eventEmitter.on(events.CREATE_STUDY, function () {
     machineInstance.send("CREATE_STUDY");
 });
 eventEmitter.on(events.DELETE_STUDY_DATA_ACCESS_RESULT, function (data) {
+    router.redirect('/study/' + Object.keys(data)[0]);
     machineInstance.send("RESOLVE", {data});
 });
 eventEmitter.on(events.DELETE_STUDY, function (studyName) {
@@ -102,17 +110,6 @@ eventEmitter.on(events.RENAME_STUDY_DATA_ACCESS_RESULT, function (data) {
 eventEmitter.on(events.READ_STUDIES_DATA_ACCESS_RESULT, function (data) {
     machineInstance.send("RESOLVE", {data});
 });
-
-
-// window.addEventListener("load", function () {
-//     var createStudyButton = document.querySelector("#studies button");
-//     createStudyButton.addEventListener("click", function () {
-//         machineInstance.send("CREATE_STUDY");
-//     })
-// });
-
-
-
 
 
 

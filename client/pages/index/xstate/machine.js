@@ -202,10 +202,10 @@ module.exports = {
                             var testName = Object.keys(event.data)[0];
                             return event.data[testName][context.current_test_type][context.current_test_lang];
                         },
-                        current_study: function (context, event) {
-                            var testName = Object.keys(event.data)[0];
-                            return testName;
-                        },
+                        // current_study: function (context, event) {
+                        //     var testName = Object.keys(event.data)[0];
+                        //     return testName;
+                        // },
                         current_test_studies: function (context, event) {
                             var testName = Object.keys(event.data)[0];
                             context.current_test_studies[testName] = event.data[testName];
@@ -227,14 +227,10 @@ module.exports = {
                         current_test_readonly: function (context, event) {
                             return false;
                         },
-                        // current_test_definition: function (context, event) {
+                        // current_study: function (context, event) {
                         //     var testName = Object.keys(event.data)[0];
-                        //     return event.data[testName][context.current_test_type][context.current_test_lang];
+                        //     return testName;
                         // },
-                        current_study: function (context, event) {
-                            var testName = Object.keys(event.data)[0];
-                            return testName;
-                        },
                         current_test_studies: function (context, event) {
                             var currentTestStudies = {};
                             var studies = event.data;
