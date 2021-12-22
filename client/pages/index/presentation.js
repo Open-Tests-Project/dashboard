@@ -20,25 +20,43 @@ function _renderForm (context, formContainer) {
 
     var currentConfig = context.current_test_definition;
     var form = document.createElement("form");
-
     if (!context.current_test_readonly) {
-        var submit = document.createElement("input");
-        submit.type = "submit";
-        submit.value = "Save";
-        form.appendChild(submit);
+        var submit = document.createElement("button");
+        submit.innerText = "Save";
+        submit.className = "success";
+        submit.addEventListener("click", function (event) {
+            var payload = {};
+            for (var i = 0; i < form.elements.length; i += 1) {
+                var element = form.elements[i];
+                if (element.tagName === "SELECT") {
+                    payload[element.name] = [];
+                    for (var j = 0; j < element.options.length; j += 1) {
+                        var option = element.options[j];
+                        payload[element.name].push(option.value);
+                    }
+                } else {
+                    payload[element.name] = element.value;
+                }
+            }
+
+        });
+        formContainer.appendChild(submit);
+
+
         // delete study button
         var button = document.createElement("button");
         button.innerText = texts.test_definition.button;
+        button.className = "error";
         button.addEventListener("click", function (event) {
             eventEmitter.emit(events.DELETE_STUDY, context.current_study);
         });
         formContainer.appendChild(button);
 
-        var studyName = document.createElement("input");
-        studyName.type = "hidden";
-        studyName.name = "study_name";
-        studyName.value = context.current_study;
-        form.appendChild(studyName);
+        // var studyName = document.createElement("input");
+        // studyName.type = "hidden";
+        // studyName.name = "study_name";
+        // studyName.value = context.current_study;
+        // form.appendChild(studyName);
     }
 
     var fields = Object.keys(currentConfig);
@@ -49,6 +67,7 @@ function _renderForm (context, formContainer) {
         if (typeof fieldValue === "object") {
             input = document.createElement("select");
             input.multiple = true;
+            input.name = field;
             fieldValue.forEach(function (item) {
                 var option = document.createElement("option");
                 option.value = item;
@@ -63,7 +82,7 @@ function _renderForm (context, formContainer) {
                 input.type = "text";
             }
             input.value = fieldValue;
-            input.name = "field";
+            input.name = field;
         }
 
         input.disabled = context.current_test_readonly;
