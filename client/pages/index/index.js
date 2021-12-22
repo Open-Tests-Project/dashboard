@@ -76,7 +76,7 @@ eventEmitter.on(events.CHANGE_TEST, function (test) {
     });
 });
 eventEmitter.on(events.CHANGE_STUDY, function (study) {
-    router.redirect('/study/' + study);
+    router.redirect('/study/' + router.buildParam(study));
 });
 eventEmitter.on(events.CHANGE_LANG, function (lang) {
     machineInstance.send(events.CHANGE_LANG, {
@@ -84,14 +84,14 @@ eventEmitter.on(events.CHANGE_LANG, function (lang) {
     });
 });
 eventEmitter.on(events.CREATE_STUDY_DATA_ACCESS_RESULT, function (data) {
-    router.redirect('/study/' + Object.keys(data)[0]);
+    router.redirect('/study/' + router.buildParam(data));
     machineInstance.send("RESOLVE", {data});
 });
 eventEmitter.on(events.CREATE_STUDY, function () {
     machineInstance.send("CREATE_STUDY");
 });
 eventEmitter.on(events.DELETE_STUDY_DATA_ACCESS_RESULT, function (data) {
-    router.redirect('/study/' + Object.keys(data)[0]);
+    router.redirect('/study/' + router.buildParam(data));
     machineInstance.send("RESOLVE", {data});
 });
 eventEmitter.on(events.DELETE_STUDY, function (studyName) {

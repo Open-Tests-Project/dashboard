@@ -22,6 +22,16 @@ module.exports = function (machineInstance) {
             initialized = true;
             page.redirect(window.location.hash.substring(2));
         }
+    };
+    page.buildParam = function (input) {
+        if (!input) {
+            return "";
+        }
+        if (typeof input === "string") {
+            return input;
+        } else {
+            return Object.keys(input)[0] || "";
+        }
     }
 
     return page;
