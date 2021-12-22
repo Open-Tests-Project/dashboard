@@ -26,7 +26,6 @@ const domainActions = {
         domain.exec(events.READ_STUDIES, context);
     },
     start_creating_study: function (context) {
-        // study:simone:asjdkasjakjds
         domain.exec(events.CREATE_STUDY, context);
     },
     start_deleting_study: function (context, event) {
@@ -40,6 +39,12 @@ const domainActions = {
             new_name: event.new_name,
             old_name: event.old_name,
             current_test: event.current_test
+        });
+    },
+    start_updating_study: function (context, event) {
+        domain.exec(events.UPDATE_STUDY, {
+            data: event.data,
+            current_test: context.current_test
         });
     }
 
@@ -105,6 +110,10 @@ eventEmitter.on(events.RENAME_STUDY, function (payload) {
 });
 eventEmitter.on(events.RENAME_STUDY_DATA_ACCESS_RESULT, function (data) {
     machineInstance.send("RESOLVE", {data});
+});
+
+eventEmitter.on(events.UPDATE_STUDY, function (data) {
+    machineInstance.send(events.UPDATE_STUDY, {data});
 });
 
 eventEmitter.on(events.READ_STUDIES_DATA_ACCESS_RESULT, function (data) {

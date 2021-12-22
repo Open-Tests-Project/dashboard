@@ -38,6 +38,12 @@ module.exports = {
                     new_name: payload.new_name
                 };
                 break;
+            case events.UPDATE_STUDY:
+                options.method = "put";
+                options.url = `${BASE_URL}/api/study/${payload.current_test}`;
+                options.data = payload.data;
+                break;
+
             default:
                 break;
         }

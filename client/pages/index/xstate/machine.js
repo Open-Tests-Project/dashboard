@@ -106,6 +106,9 @@ module.exports = {
                 RENAME_STUDY: {
                     target: "renaming_study"
                 },
+                UPDATE_STUDY: {
+                    target: "updating_study"
+                }
             }
         },
         loading_tests: {
@@ -251,6 +254,27 @@ module.exports = {
 
         renaming_study: {
             entry: ["entry_loading", "start_renaming_study"],
+            on: {
+                RESOLVE: {
+                    target: "idle",
+                    actions: assign({
+                        current_study: function (context, event) {
+                            console.log(event)
+                            return event.data.new_name;
+                        },
+                        current_test_studies: function (context, event) {
+                            context.current_test_studies[event.data.new_name] = context.current_test_studies[event.data.old_name];
+                            delete context.current_test_studies[event.old_name];
+                            return context.current_test_studies;
+                        }
+                    })
+                },
+                REJECT: {}
+            },
+            exit: ["render_current_study", "exit_loading"]
+        },
+        updating_study: {
+            entry: ["entry_loading", "start_updating_study"],
             on: {
                 RESOLVE: {
                     target: "idle",

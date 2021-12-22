@@ -12,6 +12,7 @@ eventEmitter.on(events.READ_USER_DATA_ACCESS_RESULT, function (data) {
 
 function _renderForm (context, formContainer) {
 
+    console.log(context)
     formContainer.innerHTML = null;
 
     if (!context.current_study && !context.current_test_readonly) {
@@ -25,19 +26,21 @@ function _renderForm (context, formContainer) {
         submit.innerText = "Save";
         submit.className = "success";
         submit.addEventListener("click", function (event) {
-            var payload = {};
+            var data = {};
             for (var i = 0; i < form.elements.length; i += 1) {
                 var element = form.elements[i];
                 if (element.tagName === "SELECT") {
-                    payload[element.name] = [];
+                    data[element.name] = [];
                     for (var j = 0; j < element.options.length; j += 1) {
                         var option = element.options[j];
-                        payload[element.name].push(option.value);
+                        data[element.name].push(option.value);
                     }
                 } else {
-                    payload[element.name] = element.value;
+                    data[element.name] = element.value;
                 }
             }
+
+            eventEmitter.emit(events.UPDATE_STUDY, data);
 
         });
         formContainer.appendChild(submit);
