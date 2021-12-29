@@ -12,7 +12,6 @@ eventEmitter.on(events.READ_USER_DATA_ACCESS_RESULT, function (data) {
 
 function _renderForm (context, formContainer) {
 
-    console.log(context)
     formContainer.innerHTML = null;
 
     if (!context.current_study && !context.current_test_readonly) {
@@ -51,7 +50,7 @@ function _renderForm (context, formContainer) {
         button.innerText = texts.test_definition.button;
         button.className = "error";
         button.addEventListener("click", function (event) {
-            eventEmitter.emit(events.DELETE_STUDY, context.current_study);
+            eventEmitter.emit(events.DELETE_STUDY, context);
         });
         formContainer.appendChild(button);
 
@@ -185,13 +184,13 @@ function _renderStudy (context) {
             var newName = this.innerText.trim();
             eventEmitter.emit(events.RENAME_STUDY, {
                 new_name: newName,
-                old_name: context.current_study,
+                old_name: context.current_study.study_name,
                 current_test: context.current_test
             });
         });
         header.appendChild(studyName);
     }
-    studyName.innerText = context.current_study;
+    studyName.innerText = context.current_study ? context.current_study.study_name : "";
 
 
     if (!context.current_study) {
@@ -202,14 +201,20 @@ function _renderStudy (context) {
 }
 
 function _buildStudiesSelect (context, name) {
+
     var studies = context.current_test_studies;
     var select = document.createElement("select");
+    var currentStudyId = context.current_study ? context.current_study.study_id : "";
     select.name = name;
     select.appendChild(document.createElement("option"));
-    for (var studyName in studies) {
+    for (var i = 0; i < studies.length; i += 1) {
+        var study = studies[i];
+        var studyName = study.study_name;
+        var studyId = study.study_id;
         var option = document.createElement("option");
-        option.value = studyName;
-        option.selected = studyName === context.current_study;
+        option.value = studyId;
+        //option.selected = studyName === context.current_study;
+        option.selected = studyId == currentStudyId;
         option.innerText = studyName;
         select.appendChild(option);
     }

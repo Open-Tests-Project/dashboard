@@ -10,9 +10,9 @@ module.exports = function (machineInstance) {
         hashbang: true
     });
 
-    page("/study/:study?", function (ctx, next) {
+    page("/study/:study_id?", function (ctx, next) {
         machineInstance.send(events.CHANGE_STUDY, {
-            current_study: ctx.params.study
+            study_id: ctx.params.study_id
         });
         next();
     });
@@ -23,15 +23,19 @@ module.exports = function (machineInstance) {
             page.redirect(window.location.hash.substring(2));
         }
     };
-    page.buildParam = function (input) {
-        if (!input) {
-            return "";
+    page.buildParam = function (context) {
+        if (context && context.current_study) {
+            return context.current_study.study_id;
         }
-        if (typeof input === "string") {
-            return input;
-        } else {
-            return Object.keys(input)[0] || "";
-        }
+        return "";
+        // if (!input) {
+        //     return "";
+        // }
+        // if (typeof input === "string") {
+        //     return input;
+        // } else {
+        //     return input.study_id;
+        // }
     }
 
     return page;

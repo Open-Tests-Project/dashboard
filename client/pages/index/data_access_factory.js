@@ -1,6 +1,7 @@
 "use strict";
 
 var events = require("client/events");
+const {context} = require("./xstate/machine");
 
 module.exports = {
     driver_options: function (event, payload) {
@@ -16,7 +17,7 @@ module.exports = {
                 break;
             case events.READ_STUDIES:
                 options.method = "get";
-                options.url = `${BASE_URL}/api/study/${payload.current_test}`;
+                options.url = `${BASE_URL}/api/study/test/${payload.current_test}/type/${payload.current_test_type}/lang/${payload.current_test_lang}`;
                 break;
             case events.READ_TEST:
                 options.method = "get";
@@ -24,12 +25,12 @@ module.exports = {
                 break;
             case events.CREATE_STUDY:
                 options.method = "post";
-                options.url = `${BASE_URL}/api/study/${payload.test_name}`;
-                options.data = payload.study;
+                options.url = `${BASE_URL}/api/study`;
+                options.data = payload;
                 break;
             case events.DELETE_STUDY:
                 options.method = "delete";
-                options.url = `${BASE_URL}/api/study/${payload.test_name}/${payload.study_name}`;
+                options.url = `${BASE_URL}/api/study/${payload.study_id}`;
                 break;
             case events.RENAME_STUDY:
                 options.method = "put";
