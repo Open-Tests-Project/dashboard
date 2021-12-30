@@ -223,9 +223,6 @@ module.exports = {
                 RESOLVE: {
                     target: "idle",
                     actions: assign({
-                        // current_test_readonly: function (context, event) {
-                        //     return false;
-                        // },
                         current_study: function (context, event) {
                             var deletedStudyId = event.data.study_id;
                             for (var i = 0; i < context.current_test_studies.length; i += 1) {
@@ -234,12 +231,8 @@ module.exports = {
                                     return study;
                                 }
                             }
-                            // context.current_test_studies
-                            // var testName = Object.keys(event.data)[0];
-                            // return testName;
                         },
                         current_test_studies: function (context, event) {
-
                             var deletedStudyId = event.data.study_id;
                             for (var i = 0; i < context.current_test_studies.length; i += 1) {
                                 var study = context.current_test_studies[i];
@@ -248,16 +241,6 @@ module.exports = {
                                 }
                             }
                             return context.current_test_studies;
-                            // var deletedStudyId = event.data.study_id;
-                            // var currentTestStudies = {};
-                            // var studies = event.data;
-                            // for (var studyName in studies) {
-                            //     var study = studies[studyName];
-                            //     if (study.hasOwnProperty(context.current_test_type)) {
-                            //         currentTestStudies[studyName] = study;
-                            //     }
-                            // }
-                            // return currentTestStudies;
                         }
                     })
                 },
@@ -273,12 +256,14 @@ module.exports = {
                     target: "idle",
                     actions: assign({
                         current_study: function (context, event) {
-                            return event.data.new_name;
-                        },
-                        current_test_studies: function (context, event) {
-                            context.current_test_studies[event.data.new_name] = context.current_test_studies[event.data.old_name];
-                            delete context.current_test_studies[event.old_name];
-                            return context.current_test_studies;
+                            var studyId = event.data.study_id;
+                            for (var i = 0; i < context.current_test_studies.length; i += 1) {
+                                var study = context.current_test_studies[i];
+                                if (study.study_id === studyId) {
+                                    study.study_name = event.data.study_name;
+                                    return study;
+                                }
+                            }
                         }
                     })
                 },

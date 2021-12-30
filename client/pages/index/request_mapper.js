@@ -34,4 +34,5 @@ mapper[events.DELETE_STUDY] = function (payload) {
     };
 };
 
+
 module.exports = mapper;

@@ -183,9 +183,7 @@ function _renderStudy (context) {
         studyName.addEventListener("blur", function () {
             var newName = this.innerText.trim();
             eventEmitter.emit(events.RENAME_STUDY, {
-                new_name: newName,
-                old_name: context.current_study.study_name,
-                current_test: context.current_test
+                study_name: newName
             });
         });
         header.appendChild(studyName);

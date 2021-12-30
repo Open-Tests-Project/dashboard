@@ -33,9 +33,8 @@ const domainActions = {
     },
     start_renaming_study: function (context, event) {
         domain.exec(events.RENAME_STUDY, {
-            new_name: event.new_name,
-            old_name: event.old_name,
-            current_test: event.current_test
+            study_name: event.study_name,
+            study_id: context.current_study.study_id
         });
     },
     start_updating_study: function (context, event) {
@@ -81,8 +80,8 @@ eventEmitter.on(events.CHANGE_TEST, function (test) {
         current_test_type: test
     });
 });
-eventEmitter.on(events.CHANGE_STUDY, function (study) {
-    router.redirect('/study/' + router.buildParam(study));
+eventEmitter.on(events.CHANGE_STUDY, function (studyId) {
+    router.redirect('/study/' + studyId);
 });
 eventEmitter.on(events.CHANGE_LANG, function (lang) {
     machineInstance.send(events.CHANGE_LANG, {
