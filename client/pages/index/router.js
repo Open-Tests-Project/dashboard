@@ -28,14 +28,6 @@ module.exports = function (machineInstance) {
             return context.current_study.study_id;
         }
         return "";
-        // if (!input) {
-        //     return "";
-        // }
-        // if (typeof input === "string") {
-        //     return input;
-        // } else {
-        //     return input.study_id;
-        // }
     }
 
     return page;

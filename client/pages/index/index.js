@@ -89,14 +89,12 @@ eventEmitter.on(events.CHANGE_LANG, function (lang) {
     });
 });
 eventEmitter.on(events.CREATE_STUDY_DATA_ACCESS_RESULT, function (data) {
-    // router.redirect('/study/' + router.buildParam(data.study_id));
     machineInstance.send("RESOLVE", {data});
 });
 eventEmitter.on(events.CREATE_STUDY, function () {
     machineInstance.send("CREATE_STUDY");
 });
 eventEmitter.on(events.DELETE_STUDY_DATA_ACCESS_RESULT, function (data) {
-    // router.redirect('/study/' + router.buildParam(data));
     machineInstance.send("RESOLVE", {data});
 });
 eventEmitter.on(events.DELETE_STUDY, function (studyName) {
