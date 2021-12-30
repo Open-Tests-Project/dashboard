@@ -33,18 +33,19 @@ const domainActions = {
     },
     start_renaming_study: function (context, event) {
         domain.exec(events.RENAME_STUDY, {
-            study_name: event.study_name,
+            data:{
+                study_name: event.study_name
+             },
             study_id: context.current_study.study_id
         });
     },
     start_updating_study: function (context, event) {
         domain.exec(events.UPDATE_STUDY, {
             data: event.data,
-            current_test: context.current_test
+            study_id: context.current_study.study_id
         });
     },
     update_hash: function (context, event) {
-        // console.log(context)
         router.redirect('/study/' + router.buildParam(context));
     }
 

@@ -35,9 +35,7 @@ module.exports = {
             case events.RENAME_STUDY:
                 options.method = "put";
                 options.url = `${BASE_URL}/api/studies/${payload.study_id}`;
-                options.data = {
-                    study_name: payload.study_name
-                };
+                options.data = payload.data;
                 break;
             case events.UPDATE_STUDY:
                 options.method = "put";
