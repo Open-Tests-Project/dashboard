@@ -35,13 +35,15 @@ const domainActions = {
         domain.exec(events.RENAME_STUDY, {
             data:{
                 study_name: event.study_name
-             },
+            },
             study_id: context.current_study.study_id
         });
     },
     start_updating_study: function (context, event) {
         domain.exec(events.UPDATE_STUDY, {
-            data: event.data,
+            data: {
+                test_attributes: event.data
+            },
             study_id: context.current_study.study_id
         });
     },
@@ -113,6 +115,9 @@ eventEmitter.on(events.RENAME_STUDY_DATA_ACCESS_RESULT, function (data) {
 
 eventEmitter.on(events.UPDATE_STUDY, function (data) {
     machineInstance.send(events.UPDATE_STUDY, {data});
+});
+eventEmitter.on(events.UPDATE_STUDY_DATA_ACCESS_RESULT, function (data) {
+    machineInstance.send("RESOLVE", {data});
 });
 
 eventEmitter.on(events.READ_STUDIES_DATA_ACCESS_RESULT, function (data) {

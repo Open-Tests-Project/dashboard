@@ -39,7 +39,7 @@ module.exports = {
                 break;
             case events.UPDATE_STUDY:
                 options.method = "put";
-                options.url = `${BASE_URL}/api/studies/${payload.current_test}`;
+                options.url = `${BASE_URL}/api/tests/${payload.study_id}`;
                 options.data = payload.data;
                 break;
 

@@ -278,14 +278,17 @@ module.exports = {
                     target: "idle",
                     actions: assign({
                         current_study: function (context, event) {
-                            console.log(event)
-                            return event.data.new_name;
+                            var studyId = event.data.study_id;
+
+                            for (var i = 0; i < context.current_test_studies.length; i += 1) {
+                                var study = context.current_test_studies[i];
+
+                                if (study.study_id === studyId) {
+                                    study.test_attributes = event.data.test_attributes;
+                                    return study;
+                                }
+                            }
                         },
-                        current_test_studies: function (context, event) {
-                            context.current_test_studies[event.data.new_name] = context.current_test_studies[event.data.old_name];
-                            delete context.current_test_studies[event.old_name];
-                            return context.current_test_studies;
-                        }
                     })
                 },
                 REJECT: {}

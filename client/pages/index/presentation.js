@@ -18,7 +18,9 @@ function _renderForm (context, formContainer) {
         return;
     }
 
-    var currentConfig = context.current_test_definition;
+    var currentConfig = context.current_study && context.current_study.test_attributes ?
+                        context.current_study.test_attributes :
+                        context.current_test_definition;
     var form = document.createElement("form");
     if (!context.current_test_readonly) {
         var submit = document.createElement("button");
