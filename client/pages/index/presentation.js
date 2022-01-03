@@ -66,6 +66,7 @@ function _renderForm (context, formContainer) {
     var fields = Object.keys(currentConfig);
 
     fields.forEach(function (field) {
+        var fieldContainer = document.createElement("fieldset");
         var fieldValue = currentConfig[field];
         var input;
         if (typeof fieldValue === "object") {
@@ -78,6 +79,7 @@ function _renderForm (context, formContainer) {
                 option.innerText = item;
                 input.appendChild(option);
             });
+            var acttionInput;
         } else {
             if (fieldValue.length >=50) {
                 input = document.createElement("textarea");
@@ -93,10 +95,11 @@ function _renderForm (context, formContainer) {
         var label = document.createElement("label");
         label.innerText = field;
         label.appendChild(input);
-        label.appendChild(document.createElement("br"));
-        form.appendChild(label);
-        formContainer.appendChild(form);
+        fieldContainer.appendChild(label);
+        form.appendChild(fieldContainer);
     });
+
+    formContainer.appendChild(form);
 }
 
 function _buildTestTypesSelect (context, name) {
