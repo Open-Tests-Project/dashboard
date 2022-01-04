@@ -22,7 +22,6 @@ function _itemActionButtonOnClick (event) {
     var select = container.querySelector("select");
     var input = container.querySelector("input");
 
-
     switch (action) {
         case "create-item":
             if (!input.value) {
@@ -51,6 +50,10 @@ function _itemActionButtonOnClick (event) {
             }
             return;
         default:
+            var selectedOption = select.options[select.options.selectedIndex];
+            if (selectedOption) {
+                input.value = selectedOption.value;
+            }
             return;
     }
 
@@ -132,6 +135,7 @@ function _renderForm (context, formContainer) {
                 input.appendChild(option);
             });
             if (!context.current_test_readonly) {
+                input.addEventListener("click", _itemActionButtonOnClick);
                 var crudContainer = document.createElement("div");
                 crudContainer.className = "crud-container";
                 var actionInput = document.createElement("input");
