@@ -36,6 +36,9 @@ article
     background: $bg-color
     color: $white
     padding: 2px 4px
+    position: sticky
+    top: 0
+    z-index: 1
     .renamable::before
       content: " - "
 article.draggable
@@ -45,10 +48,22 @@ article
   main
     padding: 5px
 
+
 button
   padding: 5px 10px
-  margin: 0 10px
+  margin-right: 10px
 .column
   display: inline-block
   float: left
   width: 50%
+
+
+fieldset
+  .crud-container
+    float: right
+    button
+      margin-top: 10px
+  select
+    padding: 0.4em
+    //input
+    //  display: inline-block

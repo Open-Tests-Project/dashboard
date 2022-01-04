@@ -9,6 +9,55 @@ eventEmitter.on(events.READ_USER_DATA_ACCESS_RESULT, function (data) {
     header.user = data;
 });
 
+function _itemActionButtonOnClick (event) {
+
+    event.preventDefault();
+
+    var action = event.target.getAttribute("data-action");
+
+    var container = event.target;
+    while (container.tagName !== "FIELDSET") {
+        container = container.parentNode;
+    }
+    var select = container.querySelector("select");
+    var input = container.querySelector("input");
+
+
+    switch (action) {
+        case "create-item":
+            if (!input.value) {
+                return;
+            }
+            var option = document.createElement("option");
+            option.value = input.value;
+            option.innerText = input.value;
+            select.appendChild(option);
+
+            return;
+        case "update-item":
+            if (!input.value) {
+                return;
+            }
+            var selectedOption = select.options[select.options.selectedIndex];
+            if (selectedOption) {
+                selectedOption.value = input.value;
+                selectedOption.innerText = input.value;
+            }
+            return;
+        case "delete-item":
+            var selectedOption = select.options[select.options.selectedIndex];
+            if (selectedOption) {
+                select.removeChild(selectedOption);
+            }
+            return;
+        default:
+            return;
+    }
+
+
+}
+
+
 
 function _renderForm (context, formContainer) {
 
@@ -23,10 +72,12 @@ function _renderForm (context, formContainer) {
                         context.current_test_definition;
     var form = document.createElement("form");
     if (!context.current_test_readonly) {
-        var submit = document.createElement("button");
-        submit.innerText = "Save";
-        submit.className = "success";
-        submit.addEventListener("click", function (event) {
+        var submitButton = document.createElement("button");
+        submitButton.innerText = "Save";
+        submitButton.className = "success";
+        submitButton.setAttribute("data-action", "save-study");
+        submitButton.addEventListener("click", function (event) {
+
             var data = {};
             for (var i = 0; i < form.elements.length; i += 1) {
                 var element = form.elements[i];
@@ -44,17 +95,17 @@ function _renderForm (context, formContainer) {
             eventEmitter.emit(events.UPDATE_STUDY, data);
 
         });
-        formContainer.appendChild(submit);
+        formContainer.appendChild(submitButton);
 
 
         // delete study button
-        var button = document.createElement("button");
-        button.innerText = texts.test_definition.button;
-        button.className = "error";
-        button.addEventListener("click", function (event) {
+        var deleteButton = document.createElement("button");
+        deleteButton.innerText = texts.test_definition.button;
+        deleteButton.className = "error";
+        deleteButton.addEventListener("click", function (event) {
             eventEmitter.emit(events.DELETE_STUDY, context);
         });
-        formContainer.appendChild(button);
+        formContainer.appendChild(deleteButton);
 
         // var studyName = document.createElement("input");
         // studyName.type = "hidden";
@@ -71,6 +122,7 @@ function _renderForm (context, formContainer) {
         var input;
         if (typeof fieldValue === "object") {
             input = document.createElement("select");
+            input.size = 6;
             input.multiple = true;
             input.name = field;
             fieldValue.forEach(function (item) {
@@ -79,7 +131,30 @@ function _renderForm (context, formContainer) {
                 option.innerText = item;
                 input.appendChild(option);
             });
-            var acttionInput;
+            if (!context.current_test_readonly) {
+                var crudContainer = document.createElement("div");
+                crudContainer.className = "crud-container";
+                var actionInput = document.createElement("input");
+                var createButton = document.createElement("button");
+                createButton.innerText = "Add item";
+                createButton.setAttribute("data-action", "create-item");
+                createButton.addEventListener("click", _itemActionButtonOnClick);
+                var updateButton = document.createElement("button");
+                updateButton.innerText = "Update item";
+                updateButton.setAttribute("data-action", "update-item");
+                updateButton.addEventListener("click", _itemActionButtonOnClick);
+                var deleteButton = document.createElement("button");
+                deleteButton.innerText = "Delete item";
+                deleteButton.setAttribute("data-action", "delete-item");
+                deleteButton.addEventListener("click", _itemActionButtonOnClick);
+                crudContainer.appendChild(actionInput);
+                crudContainer.appendChild(document.createElement("br"));
+                crudContainer.appendChild(createButton);
+                crudContainer.appendChild(updateButton);
+                crudContainer.appendChild(deleteButton);
+                fieldContainer.appendChild(crudContainer);
+            }
+
         } else {
             if (fieldValue.length >=50) {
                 input = document.createElement("textarea");
