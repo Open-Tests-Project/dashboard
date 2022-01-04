@@ -213,6 +213,7 @@ module.exports = function (env = {}) {
                 "base-uri": "'none'", // not default-src fallback
                 "form-action": "'none'", // not default-src fallback
                 //"frame-ancestors": "'none'", // not default-src fallback but it's not possible to add via the meta tag
+                "img-src": "'self' blob: data:;",
                 "object-src": "'none'",
                 "frame-src": "'none'",
                 "script-src": ["'self'"], // ajv need it and with self nonce does not work

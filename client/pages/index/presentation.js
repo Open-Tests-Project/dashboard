@@ -9,6 +9,25 @@ eventEmitter.on(events.READ_USER_DATA_ACCESS_RESULT, function (data) {
     header.user = data;
 });
 
+function _validateImage (image) {
+    // check the type
+    var validTypes = ['image/jpeg', 'image/png', 'image/gif'];
+    if (validTypes.indexOf( image.type ) === -1) {
+        alert("Invalid File Type");
+        return false;
+    }
+
+    // check the size
+    var maxSizeInBytes = 10e6; // 10MB
+    if (image.size > maxSizeInBytes) {
+        alert("File too large");
+        return false;
+    }
+
+    return true;
+
+}
+
 function _itemActionButtonOnClick (event) {
 
     event.preventDefault();
@@ -21,6 +40,7 @@ function _itemActionButtonOnClick (event) {
     }
     var select = container.querySelector("select");
     var input = container.querySelector("input");
+    var img = container.querySelector("img");
 
     switch (action) {
         case "create-item":
@@ -28,7 +48,7 @@ function _itemActionButtonOnClick (event) {
                 return;
             }
             var option = document.createElement("option");
-            option.value = input.value;
+            option.value = img.src || input.value;
             option.innerText = input.value;
             select.appendChild(option);
 
@@ -37,22 +57,27 @@ function _itemActionButtonOnClick (event) {
             if (!input.value) {
                 return;
             }
-            var selectedOption = select.options[select.options.selectedIndex];
-            if (selectedOption) {
-                selectedOption.value = input.value;
-                selectedOption.innerText = input.value;
+            var option = select.options[select.options.selectedIndex];
+            if (option) {
+                option.value = img.src || input.value;
+                option.innerText = input.value;
             }
             return;
         case "delete-item":
-            var selectedOption = select.options[select.options.selectedIndex];
-            if (selectedOption) {
-                select.removeChild(selectedOption);
+            var option = select.options[select.options.selectedIndex];
+            if (option) {
+                select.removeChild(option);
             }
             return;
         default:
             var selectedOption = select.options[select.options.selectedIndex];
             if (selectedOption) {
-                input.value = selectedOption.value;
+                input.value = selectedOption.innerText;
+                if (selectedOption.value.slice(0, 10) === "data:image") {
+                    img.src = selectedOption.value;
+                } else {
+                    img.src = "";
+                }
             }
             return;
     }
@@ -84,11 +109,17 @@ function _renderForm (context, formContainer) {
             var data = {};
             for (var i = 0; i < form.elements.length; i += 1) {
                 var element = form.elements[i];
+                if (!element.name) {
+                    continue;
+                }
                 if (element.tagName === "SELECT") {
                     data[element.name] = [];
                     for (var j = 0; j < element.options.length; j += 1) {
                         var option = element.options[j];
-                        data[element.name].push(option.value);
+                        data[element.name].push({
+                            value: option.value,
+                            label: option.innerText
+                        });
                     }
                 } else {
                     data[element.name] = element.value;
@@ -130,15 +161,56 @@ function _renderForm (context, formContainer) {
             input.name = field;
             fieldValue.forEach(function (item) {
                 var option = document.createElement("option");
-                option.value = item;
-                option.innerText = item;
+                if (typeof item === "string") {
+                    option.value = item;
+                    option.innerText = item;
+                } else {
+                    option.value = item.value;
+                    option.innerText = item.label;
+                }
                 input.appendChild(option);
             });
             if (!context.current_test_readonly) {
                 input.addEventListener("click", _itemActionButtonOnClick);
                 var crudContainer = document.createElement("div");
+                var img = document.createElement("img");
                 crudContainer.className = "crud-container";
                 var actionInput = document.createElement("input");
+                var dropRegion = document.createElement("div");
+                dropRegion.className = "drop-region";
+                dropRegion.innerText = "Drag & Drop images or click to upload";
+
+                // open file selector when clicked on the drop region
+                var fakeInput = document.createElement("input");
+                fakeInput.type = "file";
+                fakeInput.accept = "image/*";
+                fakeInput.multiple = true;
+                dropRegion.addEventListener('click', function() {
+                    fakeInput.click();
+                });
+
+                fakeInput.addEventListener("change", function() {
+                    var files = fakeInput.files;
+                    for (var i = 0, len = files.length; i < len; i++) {
+                        var file = files[i];
+                        if (_validateImage(file))
+
+                            // read the image...
+                            var reader = new FileReader();
+                            reader.onload = function(event) {
+                                img.src = event.target.result;
+                                actionInput.value = file.name;
+                            }
+                            reader.readAsDataURL(file);
+                            // img.src = URL.createObjectURL(file);
+                            // img.onload = function() {
+                            //     URL.revokeObjectURL(this.src);
+                            // };
+                            // actionInput.value = file.name;
+                    }
+                });
+
+
                 var createButton = document.createElement("button");
                 createButton.innerText = "Add item";
                 createButton.setAttribute("data-action", "create-item");
@@ -152,7 +224,8 @@ function _renderForm (context, formContainer) {
                 deleteButton.setAttribute("data-action", "delete-item");
                 deleteButton.addEventListener("click", _itemActionButtonOnClick);
                 crudContainer.appendChild(actionInput);
-                crudContainer.appendChild(document.createElement("br"));
+                crudContainer.appendChild(dropRegion);
+                crudContainer.appendChild(img);
                 crudContainer.appendChild(createButton);
                 crudContainer.appendChild(updateButton);
                 crudContainer.appendChild(deleteButton);
