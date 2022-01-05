@@ -28,6 +28,29 @@ function _validateImage (image) {
 
 }
 
+// see https://soshace.com/the-ultimate-guide-to-drag-and-drop-image-uploading-with-pure-javascript/
+function _handleFiles (files, img, actionInput) {
+    files = files || [];
+    for (var i = 0, len = files.length; i < len; i++) {
+        var file = files[i];
+        if (_validateImage(file))
+
+            // read the image...
+            var reader = new FileReader();
+            reader.onload = function(event) {
+            img.src = event.target.result;
+            actionInput.value = file.name;
+        }
+        reader.readAsDataURL(file);
+        // img.src = URL.createObjectURL(file);
+        // img.onload = function() {
+        //     URL.revokeObjectURL(this.src);
+        // };
+        // actionInput.value = file.name;
+    }
+}
+
+
 function _itemActionButtonOnClick (event) {
 
     event.preventDefault();
@@ -141,11 +164,6 @@ function _renderForm (context, formContainer) {
         });
         formContainer.appendChild(deleteButton);
 
-        // var studyName = document.createElement("input");
-        // studyName.type = "hidden";
-        // studyName.name = "study_name";
-        // studyName.value = context.current_study;
-        // form.appendChild(studyName);
     }
 
     var fields = Object.keys(currentConfig);
@@ -188,26 +206,24 @@ function _renderForm (context, formContainer) {
                 dropRegion.addEventListener('click', function() {
                     fakeInput.click();
                 });
+                dropRegion.addEventListener('dragenter', function () {
+                    this.classList.add("dropping");
+                }, false);
+                dropRegion.addEventListener('dragleave', function () {
+                    this.classList.remove("dropping");
+                }, false);
+                dropRegion.addEventListener('dragover', function (event) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }, false);
+                dropRegion.addEventListener('drop', function (event) {
+                    event.preventDefault();
+                    this.classList.remove("dropping");
+                    _handleFiles(event.dataTransfer.files, img, actionInput);
+                }, false);
 
                 fakeInput.addEventListener("change", function() {
-                    var files = fakeInput.files;
-                    for (var i = 0, len = files.length; i < len; i++) {
-                        var file = files[i];
-                        if (_validateImage(file))
-
-                            // read the image...
-                            var reader = new FileReader();
-                            reader.onload = function(event) {
-                                img.src = event.target.result;
-                                actionInput.value = file.name;
-                            }
-                            reader.readAsDataURL(file);
-                            // img.src = URL.createObjectURL(file);
-                            // img.onload = function() {
-                            //     URL.revokeObjectURL(this.src);
-                            // };
-                            // actionInput.value = file.name;
-                    }
+                    _handleFiles(fakeInput.files, img, actionInput);
                 });
 
 
