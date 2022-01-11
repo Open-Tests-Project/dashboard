@@ -1,6 +1,8 @@
 "use strict";
 
 // load components
+require("iat");
+
 require("client/components/index");
 var presentation = require("client/pages/index/presentation");
 var events = require("client/events");
